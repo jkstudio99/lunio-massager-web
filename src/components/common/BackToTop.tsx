@@ -7,8 +7,7 @@ export default function BackToTop() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Use a more stable threshold
-      if (window.scrollY > 300) {
+      if (window.scrollY > 400) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -16,7 +15,6 @@ export default function BackToTop() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
@@ -33,13 +31,14 @@ export default function BackToTop() {
     <button
       onClick={scrollToTop}
       className={cn(
-        'fixed bottom-24 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 shadow-lg border active:scale-95',
-        'bg-surface border-default text-secondary hover:text-crocus hover:border-crocus/30',
+        'fixed bottom-[114px] right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 shadow-lg active:scale-95 border border-default/50',
+        // Forced white background as requested, even in dark mode
+        'bg-white text-brand hover:bg-white/95 hover:shadow-brand/10',
         isVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
       )}
       aria-label="Back to top"
     >
-      <ChevronUp size={22} />
+      <ChevronUp size={28} />
     </button>
   );
 }
