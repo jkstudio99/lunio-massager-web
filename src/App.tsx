@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import ScrollToTop from '@/components/common/ScrollToTop';
 import FloatingContact from '@/components/common/FloatingContact';
+import BackToTop from '@/components/common/BackToTop';
 import CartDrawer from '@/components/cart/CartDrawer';
 import HomePage from '@/pages/HomePage';
 import ProductListPage from '@/pages/ProductListPage';
@@ -18,6 +19,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <FloatingContact />
+      <BackToTop />
       <CartDrawer />
       <Routes>
         <Route element={<Layout />}>
