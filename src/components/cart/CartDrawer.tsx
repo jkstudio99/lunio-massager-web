@@ -12,8 +12,8 @@ export default function CartDrawer() {
   const navigate = useNavigate();
   const { items, isDrawerOpen, closeDrawer, updateQuantity, removeItem, totalPrice, totalItems } = useCartStore();
 
-  const shippingFee = totalPrice() >= 1500 ? 0 : 100;
-  const total = totalPrice() + shippingFee;
+  const shippingFee = 0;
+  const total = totalPrice();
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
