@@ -7,6 +7,7 @@ export default function BackToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
+      // Show button when page is scrolled down more than 400px
       if (window.scrollY > 400) {
         setIsVisible(true);
       } else {
@@ -14,7 +15,7 @@ export default function BackToTop() {
       }
     };
 
-    window.addEventListener('scroll', toggleVisibility);
+    window.addEventListener('scroll', toggleVisibility, { passive: true });
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
@@ -29,14 +30,15 @@ export default function BackToTop() {
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          initial={{ opacity: 0, y: 10, scale: 0.8 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 10, scale: 0.8 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
           onClick={scrollToTop}
-          className="fixed bottom-[88px] right-7 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-md text-primary shadow-xl border border-default hover:bg-white hover:scale-110 transition-all active:scale-95"
+          className="fixed bottom-24 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-surface border border-default shadow-lg text-secondary hover:text-crocus hover:border-crocus/30 transition-all active:scale-95"
           aria-label="Back to top"
         >
-          <ChevronUp size={24} className="text-crocus" />
+          <ChevronUp size={22} />
         </motion.button>
       )}
     </AnimatePresence>
