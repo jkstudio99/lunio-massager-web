@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors - Lunio Palette */
+  --color-brand: #2d274a;
+  --color-brand-light: #3d3666;
+  --color-crocus: #9786f3;
+  --color-crocus-hover: #8674e8;
+  --color-crocus-soft: #b8adf7;
+  --color-titan: #ccd5f8;
+  --color-rose: #EC9BB0;
+  --color-rose-soft: #F6D0D7;
+  --color-cream: #ECE8D8;
+
+  /* Neutral */
+  --color-soft-black: #141414;
+  --color-charcoal: #333333;
+  --color-warm-gray: #F5F5F5;
+  --color-light-gray: #E8E8E8;
+  --color-medium-gray: #9A9A9A;
+  --color-gold: #9786f3;
+  --color-gold-hover: #8674e8;
+  --color-gold-soft: #ccd5f8;
+
+  /* Surface (light mode defaults) */
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F8F8F8;
+  --color-surface-elevated: #FFFFFF;
+  --color-border: #E8E8E8;
+  --color-text-primary: #141414;
+  --color-text-secondary: #666666;
+  --color-text-muted: #9A9A9A;
+
+  /* Status */
+  --color-success: #4CAF50;
+  --color-alert: #E53935;
+
+  /* Typography */
+  --font-sans: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+  --font-display: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: var(--color-surface);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Dark mode overrides */
+  .dark body,
+  .dark {
+    --color-surface: #0a0a0a;
+    --color-surface-alt: #141414;
+    --color-surface-elevated: #1a1a1a;
+    --color-border: #2a2a2a;
+    --color-text-primary: #f0f0f0;
+    --color-text-secondary: #a0a0a0;
+    --color-text-muted: #666666;
+    --color-warm-gray: #1a1a1a;
+    --color-light-gray: #2a2a2a;
+    --color-soft-black: #f0f0f0;
+    --color-charcoal: #d0d0d0;
+    --color-medium-gray: #777777;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* CJK languages need more letter spacing */
+  :lang(zh), :lang(ja), :lang(ko) {
+    letter-spacing: 0.08em;
+  }
+  :lang(zh) h1, :lang(zh) h2, :lang(zh) h3,
+  :lang(zh) h4, :lang(zh) h5, :lang(zh) h6,
+  :lang(ja) h1, :lang(ja) h2, :lang(ja) h3,
+  :lang(ko) h1, :lang(ko) h2, :lang(ko) h3 {
+    letter-spacing: 0.1em;
+  }
+
+  ::selection {
+    background-color: var(--color-crocus);
+    color: #FFFFFF;
+  }
+}
+
+/* Utility classes for theme-aware styling */
+@layer utilities {
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+  .bg-surface-alt {
+    background-color: var(--color-surface-alt);
+  }
+  .bg-surface-elevated {
+    background-color: var(--color-surface-elevated);
+  }
+  .border-default {
+    border-color: var(--color-border);
+  }
+}
