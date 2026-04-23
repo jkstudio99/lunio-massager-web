@@ -9,7 +9,10 @@ import type { ProductCategory } from '@/types/product';
 
 type SortOption = 'popular' | 'newest' | 'price-asc' | 'price-desc';
 
+import { useI18n } from '@/store/i18n';
+
 export default function ProductListPage() {
+  const { t } = useI18n();
   const [searchParams, setSearchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<SortOption>('popular');
@@ -72,11 +75,11 @@ export default function ProductListPage() {
               Collections
             </p>
             <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-[-0.03em] leading-tight mb-5">
-              {activeCategoryData?.name ?? '所有產品'}
+              {activeCategoryData ? t.categories[activeCategoryData.id as keyof typeof t.categories] : t.nav.products}
             </h1>
-            <p className="text-white/70 text-base sm:text-lg leading-relaxed max-w-2xl mb-8">
-              {activeCategoryData?.description ?? '探索我們全系列專業按摩器產品'}
-            </p>
+            <h2 className="text-white/70 text-base sm:text-lg leading-relaxed max-w-2xl mb-8">
+              {activeCategoryData ? t.sections.categoriesDesc : t.footer.tagline}
+            </h2>
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => setCategory(null)}
@@ -87,7 +90,7 @@ export default function ProductListPage() {
                     : 'bg-white/10 text-white/80 hover:bg-white/15'
                 )}
               >
-                全部
+                {t.common.all}
               </button>
               {categories.map((cat) => (
                 <button
@@ -100,7 +103,7 @@ export default function ProductListPage() {
                       : 'bg-white/10 text-white/80 hover:bg-white/15'
                   )}
                 >
-                  {cat.name}
+                  {t.categories[cat.id as keyof typeof t.categories]}
                 </button>
               ))}
             </div>
@@ -115,7 +118,7 @@ export default function ProductListPage() {
             <div className="lg:sticky lg:top-24 rounded-3xl border border-default bg-surface-alt p-4 sm:p-5">
               <h3 className="text-sm font-semibold text-primary mb-4 flex items-center gap-2">
                 <SlidersHorizontal size={16} />
-                產品分類
+                {t.common.productCategory}
               </h3>
               <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0">
                 <button
@@ -127,7 +130,7 @@ export default function ProductListPage() {
                       : 'bg-surface text-secondary hover:bg-light-gray'
                   )}
                 >
-                  全部
+                  {t.common.all}
                 </button>
                 {categories.map((cat) => (
                   <button
@@ -140,7 +143,7 @@ export default function ProductListPage() {
                         : 'bg-surface text-secondary hover:bg-light-gray'
                     )}
                   >
-                    {cat.name}
+                    {t.categories[cat.id as keyof typeof t.categories]}
                   </button>
                 ))}
               </div>
@@ -152,7 +155,7 @@ export default function ProductListPage() {
             {/* Toolbar */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-default">
               <p className="text-sm text-muted">
-                顯示 <span className="font-semibold text-primary">{filtered.length}</span> 件商品
+                {t.common.showingItems} <span className="font-semibold text-primary">{filtered.length}</span> {t.common.items}
               </p>
               <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
                 <div className="relative min-w-[140px]">
@@ -161,10 +164,10 @@ export default function ProductListPage() {
                     onChange={(e) => setSortBy(e.target.value as SortOption)}
                     className="appearance-none bg-surface-alt text-sm font-medium text-secondary pl-3 pr-8 py-2 rounded-full cursor-pointer focus:outline-none"
                   >
-                    <option value="popular">依熱門度</option>
-                    <option value="newest">依最新</option>
-                    <option value="price-asc">價格低到高</option>
-                    <option value="price-desc">價格高到低</option>
+                    <option value="popular">{t.common.sortByPopular}</option>
+                    <option value="newest">{t.common.sortByNewest}</option>
+                    <option value="price-asc">{t.common.sortByPriceAsc}</option>
+                    <option value="price-desc">{t.common.sortByPriceDesc}</option>
                   </select>
                   <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted" />
                 </div>
@@ -201,12 +204,12 @@ export default function ProductListPage() {
 
             {filtered.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-muted">目前此分類沒有產品</p>
+                <p className="text-muted">{t.common.noProducts}</p>
                 <button
                   onClick={() => setCategory(null)}
                   className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-crocus hover:text-crocus-hover transition-colors"
                 >
-                  返回全部產品 <ArrowRight size={14} />
+                  {t.product.backToProducts} <ArrowRight size={14} />
                 </button>
               </div>
             )}
@@ -216,3 +219,4 @@ export default function ProductListPage() {
     </div>
   );
 }
+

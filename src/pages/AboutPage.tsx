@@ -89,7 +89,7 @@ export default function AboutPage() {
           <motion.div {...fadeInUp} className="text-center mb-16">
             <p className="text-[11px] font-medium tracking-[0.3em] uppercase text-crocus mb-3">Values</p>
             <h2 className="text-4xl lg:text-5xl font-bold tracking-[-0.03em]">
-              {t.hero.badge === 'NEW ARRIVAL' ? 'What Drives Us' : '核心價值'}
+              {t.about.values.heading}
             </h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden">
@@ -116,10 +116,10 @@ export default function AboutPage() {
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-px">
             {[
-              { num: '50K+', label: t.hero.badge === 'NEW ARRIVAL' ? 'Happy Clients' : '滿意客戶' },
-              { num: '6+', label: t.hero.badge === 'NEW ARRIVAL' ? 'Product Lines' : '產品系列' },
-              { num: '4.8', label: t.hero.badge === 'NEW ARRIVAL' ? 'Average Rating' : '平均評分' },
-              { num: '15+', label: t.hero.badge === 'NEW ARRIVAL' ? 'Certifications' : '國際認證' },
+              { num: '50K+', label: t.about.stats.clients },
+              { num: '6+', label: t.about.stats.products },
+              { num: '4.8', label: t.about.stats.rating },
+              { num: '15+', label: t.about.stats.certifications },
             ].map((s, i) => (
               <motion.div
                 key={s.label}

@@ -5,7 +5,10 @@ import { ArrowRight, Check, Minus, Plus, ShoppingBag, X } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
 import { formatPrice } from '@/lib/utils';
 
+import { useI18n } from '@/store/i18n';
+
 export default function CartDrawer() {
+  const { t } = useI18n();
   const navigate = useNavigate();
   const { items, isDrawerOpen, closeDrawer, updateQuantity, removeItem, totalPrice, totalItems } = useCartStore();
 
@@ -34,7 +37,7 @@ export default function CartDrawer() {
         <>
           <motion.button
             type="button"
-            aria-label="關閉購物車"
+            aria-label={t.cart.closeCart}
             className="fixed inset-0 z-[70] bg-black/35 backdrop-blur-[2px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -52,13 +55,13 @@ export default function CartDrawer() {
             <div className="flex items-center justify-between border-b border-default px-5 py-4">
               <div>
                 <p className="text-[11px] font-semibold tracking-[0.24em] uppercase text-crocus">Mini Cart</p>
-                <h2 className="text-lg font-bold tracking-[-0.03em] text-primary">購物車預覽</h2>
+                <h2 className="text-lg font-bold tracking-[-0.03em] text-primary">{t.cart.preview}</h2>
               </div>
               <button
                 type="button"
                 onClick={closeDrawer}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-default text-muted transition-colors hover:border-medium-gray hover:text-primary"
-                aria-label="關閉"
+                aria-label={t.cart.close}
               >
                 <X size={18} />
               </button>
@@ -70,14 +73,14 @@ export default function CartDrawer() {
                   <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface-alt">
                     <ShoppingBag size={26} className="text-muted" />
                   </div>
-                  <p className="text-lg font-semibold text-primary">購物車目前是空的</p>
-                  <p className="mt-2 max-w-xs text-sm text-muted">先去逛逛產品，挑好後再回來結帳。</p>
+                  <p className="text-lg font-semibold text-primary">{t.cart.empty}</p>
+                  <p className="mt-2 max-w-xs text-sm text-muted">{t.cart.emptyDrawerDesc}</p>
                   <Link
                     to="/products"
                     onClick={closeDrawer}
                     className="mt-6 inline-flex items-center gap-2 rounded-full bg-crocus px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-crocus-hover"
                   >
-                    瀏覽產品
+                    {t.cart.startShopping}
                     <ArrowRight size={16} />
                   </Link>
                 </div>
@@ -109,7 +112,7 @@ export default function CartDrawer() {
                               type="button"
                               onClick={() => removeItem(item.product.id)}
                               className="rounded-full p-1 text-muted transition-colors hover:text-alert"
-                              aria-label="移除商品"
+                              aria-label={t.cart.remove}
                             >
                               <X size={14} />
                             </button>
@@ -135,7 +138,7 @@ export default function CartDrawer() {
                             </div>
 
                             <div className="text-right">
-                              <p className="text-[11px] text-muted">小計</p>
+                              <p className="text-[11px] text-muted">{t.cart.itemSubtotal}</p>
                               <p className="text-sm font-semibold text-primary">
                                 {formatPrice(item.product.price * item.quantity)}
                               </p>
@@ -152,19 +155,19 @@ export default function CartDrawer() {
             <div className="border-t border-default bg-surface px-5 py-5">
               <div className="mb-4 rounded-2xl bg-surface-alt p-4">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-secondary">商品數量</span>
+                  <span className="text-secondary">{t.cart.itemCount}</span>
                   <span className="font-semibold text-primary">{totalItems()}</span>
                 </div>
                 <div className="mt-2 flex items-center justify-between text-sm">
-                  <span className="text-secondary">商品小計</span>
+                  <span className="text-secondary">{t.cart.subtotal}</span>
                   <span className="font-semibold text-primary">{formatPrice(totalPrice())}</span>
                 </div>
                 <div className="mt-2 flex items-center justify-between text-sm">
-                  <span className="text-secondary">運費</span>
-                  <span className="font-semibold text-primary">{shippingFee === 0 ? <span className="text-success">免運費</span> : formatPrice(shippingFee)}</span>
+                  <span className="text-secondary">{t.cart.shipping}</span>
+                  <span className="font-semibold text-primary">{shippingFee === 0 ? <span className="text-success">{t.cart.freeShipping}</span> : formatPrice(shippingFee)}</span>
                 </div>
                 <div className="mt-3 border-t border-default pt-3 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-primary">合計</span>
+                  <span className="text-sm font-semibold text-primary">{t.cart.total}</span>
                   <span className="text-2xl font-bold tracking-[-0.03em] text-primary">{formatPrice(total)}</span>
                 </div>
               </div>
@@ -175,7 +178,7 @@ export default function CartDrawer() {
                   onClick={closeDrawer}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-default px-5 py-3 text-sm font-semibold text-primary transition-colors hover:border-medium-gray"
                 >
-                  繼續購物
+                  {t.cart.continueShopping}
                 </button>
                 <button
                   type="button"
@@ -185,14 +188,14 @@ export default function CartDrawer() {
                   }}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-crocus px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-crocus/20 transition-all hover:bg-crocus-hover"
                 >
-                  前往結帳
+                  {t.cart.checkout}
                   <ArrowRight size={16} />
                 </button>
               </div>
 
               <div className="mt-4 flex items-center justify-center gap-2 text-[11px] text-muted">
                 <Check size={14} className="text-success" />
-                結帳流程已準備好，現在可以直接完成購買
+                {t.cart.checkoutReady}
               </div>
             </div>
           </motion.aside>
@@ -201,3 +204,4 @@ export default function CartDrawer() {
     </AnimatePresence>
   );
 }
+

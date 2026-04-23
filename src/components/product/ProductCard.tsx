@@ -75,7 +75,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
                 ))}
               </div>
             )}
-            <span className="text-[11px] text-muted">{product.reviewCount} 評價</span>
+            <span className="text-[11px] text-muted">{product.reviewCount} {t.product.ratingLabel}</span>
           </div>
         </div>
 
@@ -118,7 +118,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             }`}
           >
             {isInCart ? <Check size={16} /> : <ShoppingBag size={16} />}
-            {isInCart ? '已加入' : t.product.addToCart}
+            {isInCart ? t.product.addedToCart : t.product.addToCart}
           </button>
         </div>
       </div>

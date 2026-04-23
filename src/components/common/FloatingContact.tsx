@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { MessageCircle, X, Phone, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useI18n } from '@/store/i18n';
+
 export default function FloatingContact() {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
 
   return (
@@ -17,7 +20,7 @@ export default function FloatingContact() {
             className="bg-surface-elevated rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.15)] p-5 w-72 mb-2"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-brand">需要幫助嗎？</h3>
+              <h3 className="text-sm font-semibold text-brand">{t.common.needHelp}</h3>
               <button
                 onClick={() => setOpen(false)}
                 className="p-1 text-muted hover:text-primary transition-colors"
@@ -26,7 +29,7 @@ export default function FloatingContact() {
               </button>
             </div>
             <p className="text-xs text-muted mb-4">
-              我們的客服團隊隨時為您服務，歡迎透過以下方式聯繫我們
+              {t.common.supportDesc}
             </p>
             <div className="space-y-2">
               <a
@@ -35,7 +38,7 @@ export default function FloatingContact() {
               >
                 <MessageCircle size={20} />
                 <div>
-                  <p className="text-sm font-semibold">LINE 線上客服</p>
+                  <p className="text-sm font-semibold">{t.common.lineSupport}</p>
                   <p className="text-[10px] opacity-80">@lunio-tw</p>
                 </div>
               </a>
@@ -45,7 +48,7 @@ export default function FloatingContact() {
               >
                 <Phone size={20} />
                 <div>
-                  <p className="text-sm font-semibold">客服電話</p>
+                  <p className="text-sm font-semibold">{t.common.phoneSupport}</p>
                   <p className="text-[10px] text-muted">02-2xxx-xxxx</p>
                 </div>
               </a>
@@ -61,7 +64,7 @@ export default function FloatingContact() {
               </a>
             </div>
             <p className="text-[10px] text-muted text-center mt-3">
-              服務時間：週一至週六 09:00-18:00
+              {t.common.serviceHours}
             </p>
           </motion.div>
         )}
@@ -70,10 +73,11 @@ export default function FloatingContact() {
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-center w-14 h-14 rounded-full bg-brand text-white shadow-lg shadow-brand/30 hover:bg-brand-light transition-all hover:scale-105"
-        aria-label="聯繫客服"
+        aria-label={t.common.contactAria}
       >
         {open ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
     </div>
   );
 }
+

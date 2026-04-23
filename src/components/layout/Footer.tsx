@@ -42,7 +42,7 @@ export default function Footer() {
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-14 lg:py-20">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div>
-              <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/55 mb-3">Stay in touch</p>
+              <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/55 mb-3">{t.footer.stayInTouch}</p>
               <h3 className="text-2xl lg:text-3xl font-bold tracking-[-0.03em] mb-2">{t.footer.newsletter}</h3>
               <p className="text-white/60 text-sm max-w-xl">{t.footer.newsletterDesc}</p>
             </div>

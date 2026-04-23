@@ -17,7 +17,10 @@ import { useCartStore } from '@/store/cart';
 import { formatPrice, getDiscountPercent } from '@/lib/utils';
 import ProductCard from '@/components/product/ProductCard';
 
+import { useI18n } from '@/store/i18n';
+
 export default function ProductDetailPage() {
+  const { t } = useI18n();
   const { slug } = useParams<{ slug: string }>();
   const product = products.find((p) => p.slug === slug);
   const addItem = useCartStore((s) => s.addItem);
@@ -31,9 +34,9 @@ export default function ProductDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-primary mb-2">找不到此產品</h2>
+          <h2 className="text-2xl font-bold text-primary mb-2">{t.product.notFound}</h2>
           <Link to="/products" className="text-crocus hover:text-crocus-hover transition-colors">
-            返回產品列表
+            {t.product.backToProducts}
           </Link>
         </div>
       </div>
@@ -50,9 +53,9 @@ export default function ProductDetailPage() {
       {/* Breadcrumb */}
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-4">
         <nav className="flex items-center gap-2 text-xs text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">首頁</Link>
+          <Link to="/" className="hover:text-primary transition-colors">{t.nav.home}</Link>
           <ChevronRight size={12} />
-          <Link to="/products" className="hover:text-primary transition-colors">所有產品</Link>
+          <Link to="/products" className="hover:text-primary transition-colors">{t.nav.products}</Link>
           <ChevronRight size={12} />
           <span className="text-primary">{product.name}</span>
         </nav>
@@ -78,7 +81,7 @@ export default function ProductDetailPage() {
                 />
                 {product.comparePrice && (
                   <span className="absolute top-4 left-4 px-3 py-1.5 bg-alert text-white text-xs font-bold rounded-full">
-                    省 {formatPrice(product.comparePrice - product.price)}
+                    {t.product.save} {formatPrice(product.comparePrice - product.price)}
                   </span>
                 )}
               </div>
@@ -107,12 +110,12 @@ export default function ProductDetailPage() {
               <div className="flex items-center gap-2 mb-4 flex-wrap">
                 {product.isNew && (
                   <span className="px-2.5 py-1 bg-brand text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
-                    New
+                    {t.product.new}
                   </span>
                 )}
                 {product.isBestSeller && (
                   <span className="px-2.5 py-1 bg-crocus text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
-                    熱銷
+                    {t.product.bestSeller}
                   </span>
                 )}
               </div>
@@ -134,7 +137,7 @@ export default function ProductDetailPage() {
                   ))}
                 </div>
                 <span className="text-sm font-semibold">{product.rating}</span>
-                <span className="text-sm text-muted">({product.reviewCount} 評價)</span>
+                <span className="text-sm text-muted">({product.reviewCount} {t.product.ratingLabel})</span>
               </div>
 
               {/* Price */}
@@ -192,26 +195,26 @@ export default function ProductDetailPage() {
                   className="flex-1 flex items-center justify-center gap-2 h-12 bg-crocus hover:bg-crocus-hover text-white font-semibold rounded-full transition-all hover:scale-[1.01] shadow-lg shadow-crocus/20"
                 >
                   <ShoppingBag size={18} />
-                  {isInCart ? '已加入' : '加入購物車'}
+                  {isInCart ? t.product.addedToCart : t.product.addToCart}
                 </button>
               </div>
 
               <div className="flex items-center gap-2 rounded-2xl border border-default bg-surface-alt px-4 py-3 text-xs text-secondary mb-6">
                 <Check size={14} className="text-success shrink-0" />
-                加入後會自動打開 mini cart，方便你直接繼續結帳
+                {t.product.autoOpenCartHint}
               </div>
 
               <p className="text-xs text-success mb-6 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-success rounded-full" />
-                現貨供應 — 庫存 {product.stock} 件
+                {t.product.inStock} — {t.product.stock} {product.stock} {t.product.pieces}
               </p>
 
               {/* Trust */}
               <div className="grid grid-cols-3 gap-3 sm:gap-4 p-4 bg-surface rounded-2xl border border-default">
                 {[
-                  { icon: Truck, text: '免運配送' },
-                  { icon: Shield, text: '一年保固' },
-                  { icon: RefreshCw, text: '7天鑑賞' },
+                  { icon: Truck, text: t.product.freeShipping },
+                  { icon: Shield, text: t.product.yearWarranty },
+                  { icon: RefreshCw, text: t.product.returnPolicy },
                 ].map(({ icon: Icon, text }) => (
                   <div key={text} className="text-center">
                     <Icon size={18} className="mx-auto mb-1 text-crocus" />
@@ -238,9 +241,9 @@ export default function ProductDetailPage() {
                     : 'text-muted border-transparent hover:text-primary'
                 }`}
               >
-                {tab === 'description' && '產品描述'}
-                {tab === 'specs' && '產品規格'}
-                {tab === 'reviews' && `顧客評價 (${product.reviewCount})`}
+                {tab === 'description' && t.product.description}
+                {tab === 'specs' && t.product.specs}
+                {tab === 'reviews' && `${t.product.customerReviews} (${product.reviewCount})`}
               </button>
             ))}
           </div>
@@ -248,7 +251,7 @@ export default function ProductDetailPage() {
           {activeTab === 'description' && (
             <div className="max-w-3xl">
               <p className="text-sm text-secondary leading-relaxed mb-6">{product.description}</p>
-              <h3 className="text-lg font-semibold text-primary mb-4">產品特色</h3>
+              <h3 className="text-lg font-semibold text-primary mb-4">{t.product.features}</h3>
               <ul className="grid sm:grid-cols-2 gap-3">
                 {product.features.map((f) => (
                   <li key={f} className="flex items-center gap-2 text-sm text-secondary">
@@ -295,7 +298,7 @@ export default function ProductDetailPage() {
                         <span className="text-sm font-semibold text-primary">{review.author}</span>
                         {review.verified && (
                           <span className="text-[10px] text-success font-medium bg-success/10 px-2 py-0.5 rounded">
-                            已驗證購買
+                            {t.sections.verifiedPurchase}
                           </span>
                         )}
                       </div>
@@ -313,7 +316,7 @@ export default function ProductDetailPage() {
         {/* Related products */}
         {relatedProducts.length > 0 && (
           <div className="mt-16 pt-8 border-t border-default">
-            <h2 className="text-2xl font-bold text-primary mb-8">您可能也喜歡</h2>
+            <h2 className="text-2xl font-bold text-primary mb-8">{t.product.relatedProducts}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedProducts.map((p, i) => (
                 <ProductCard key={p.id} product={p} index={i} />
@@ -325,3 +328,4 @@ export default function ProductDetailPage() {
     </div>
   );
 }
+

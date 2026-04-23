@@ -3,41 +3,17 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Truck, RefreshCw, Shield, MessageCircle, Phone, Mail } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const faqs = [
-  {
-    q: '如何追蹤我的訂單？',
-    a: '下單後您會收到一封確認信件，內含訂單追蹤連結。您也可以登入帳戶，在「我的訂單」中查看即時配送狀態。',
-  },
-  {
-    q: '產品保固期限是多久？',
-    a: '所有 Lunio 產品均享有一年原廠保固。保固期間若產品出現非人為因素的故障，我們將免費維修或更換。',
-  },
-  {
-    q: '可以分期付款嗎？',
-    a: '是的！我們支援信用卡 3、6、12 期零利率分期付款。結帳時選擇信用卡付款即可選擇分期方案。',
-  },
-  {
-    q: '如何申請退換貨？',
-    a: '收到商品後 7 天內，若商品未拆封或有瑕疵，請聯繫我們的客服團隊申請退換貨。我們將安排免費取件。',
-  },
-  {
-    q: '產品是否有國際安全認證？',
-    a: '所有產品均通過 CE、FCC、BSMI 等國際安全認證，並符合台灣電器安全標準。您可以放心使用。',
-  },
-  {
-    q: '配送需要多久時間？',
-    a: '台灣本島一般配送 1-3 個工作天到貨，離島地區約 3-5 個工作天。急件可選擇快速配送（加收 NT$60）。',
-  },
-];
-
-const contactMethods = [
-  { icon: MessageCircle, title: 'Line 客服', desc: '@lunio-tw', action: '立即諮詢' },
-  { icon: Phone, title: '客服電話', desc: '02-2xxx-xxxx', action: '撥打電話' },
-  { icon: Mail, title: 'Email', desc: 'support@lunio.com.tw', action: '寄送信件' },
-];
+import { useI18n } from '@/store/i18n';
 
 export default function SupportPage() {
+  const { t } = useI18n();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const contactMethods = [
+    { icon: MessageCircle, title: t.support.contact.line, desc: '@lunio-tw', action: t.support.contact.actionConsult },
+    { icon: Phone, title: t.support.contact.phone, desc: '02-2xxx-xxxx', action: t.support.contact.actionCall },
+    { icon: Mail, title: t.support.contact.email, desc: 'support@lunio.com.tw', action: t.support.contact.actionSend },
+  ];
 
   return (
     <div className="bg-surface">
@@ -48,8 +24,8 @@ export default function SupportPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="text-3xl lg:text-4xl font-bold text-primary mb-2">客戶支援</h1>
-            <p className="text-muted">我們隨時為您提供協助</p>
+            <h1 className="text-3xl lg:text-4xl font-bold text-primary mb-2">{t.support.title}</h1>
+            <p className="text-muted">{t.support.subtitle}</p>
           </motion.div>
         </div>
       </section>
@@ -59,9 +35,9 @@ export default function SupportPage() {
         <div className="mx-auto max-w-[1280px] px-6 lg:px-8">
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              { icon: Truck, title: '配送資訊', desc: '全台滿 NT$1,500 免運，1-3 天到貨' },
-              { icon: RefreshCw, title: '退換貨政策', desc: '7 天鑑賞期，商品未拆封可全額退款' },
-              { icon: Shield, title: '保固服務', desc: '全系列產品一年原廠保固' },
+              { icon: Truck, title: t.trust.shipping, desc: t.trust.shippingDesc },
+              { icon: RefreshCw, title: t.footer.returnPolicy, desc: t.trust.returnDesc },
+              { icon: Shield, title: t.footer.warrantyService, desc: t.trust.warrantyDesc },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
@@ -82,9 +58,9 @@ export default function SupportPage() {
       {/* FAQ */}
       <section className="py-12 lg:py-16">
         <div className="mx-auto max-w-[800px] px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-primary mb-8 text-center">常見問題</h2>
+          <h2 className="text-2xl font-bold text-primary mb-8 text-center">{t.support.faqTitle}</h2>
           <div className="space-y-3">
-            {faqs.map((faq, i) => (
+            {t.support.faqs.map((faq, i) => (
               <div key={i} className="border border-default rounded-xl overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
@@ -113,7 +89,7 @@ export default function SupportPage() {
       {/* Contact */}
       <section className="py-12 lg:py-16 bg-surface-alt">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-primary mb-8 text-center">聯絡我們</h2>
+          <h2 className="text-2xl font-bold text-primary mb-8 text-center">{t.support.contactTitle}</h2>
           <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {contactMethods.map((m, i) => (
               <motion.div
@@ -134,10 +110,11 @@ export default function SupportPage() {
             ))}
           </div>
           <p className="text-center text-xs text-muted mt-8">
-            客服時間：週一至週六 09:00 - 18:00（國定假日除外）
+            {t.support.serviceHours}
           </p>
         </div>
       </section>
     </div>
   );
 }
+

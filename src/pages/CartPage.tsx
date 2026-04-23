@@ -4,7 +4,10 @@ import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft } from 'lucide-
 import { useCartStore } from '@/store/cart';
 import { formatPrice } from '@/lib/utils';
 
+import { useI18n } from '@/store/i18n';
+
 export default function CartPage() {
+  const { t } = useI18n();
   const { items, removeItem, updateQuantity, clearCart, totalPrice } = useCartStore();
 
   if (items.length === 0) {
@@ -18,13 +21,13 @@ export default function CartPage() {
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-surface-alt flex items-center justify-center">
             <ShoppingBag size={32} className="text-muted" />
           </div>
-          <h2 className="text-2xl font-bold text-primary mb-2">您的購物車是空的</h2>
-          <p className="text-muted mb-8">探索我們的產品，找到最適合您的按摩器</p>
+          <h2 className="text-2xl font-bold text-primary mb-2">{t.cart.empty}</h2>
+          <p className="text-muted mb-8">{t.cart.emptyDesc}</p>
           <Link
             to="/products"
             className="inline-flex items-center gap-2 px-8 py-3 bg-crocus hover:bg-crocus-hover text-white font-semibold rounded-full transition-all"
           >
-            開始選購
+            {t.cart.startShopping}
             <ArrowRight size={18} />
           </Link>
         </motion.div>
@@ -42,7 +45,7 @@ export default function CartPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-2xl lg:text-3xl font-bold text-primary mb-8"
         >
-          購物車 ({items.length})
+          {t.cart.title} ({items.length})
         </motion.h1>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -77,7 +80,7 @@ export default function CartPage() {
                     <button
                       onClick={() => removeItem(item.product.id)}
                       className="flex-shrink-0 p-1.5 text-muted hover:text-alert transition-colors"
-                      aria-label="移除商品"
+                      aria-label={t.cart.remove}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -111,13 +114,13 @@ export default function CartPage() {
                 to="/products"
                 className="flex items-center gap-1 text-sm text-muted hover:text-primary transition-colors"
               >
-                <ArrowLeft size={16} /> 繼續購物
+                <ArrowLeft size={16} /> {t.cart.continueShopping}
               </Link>
               <button
                 onClick={clearCart}
                 className="text-sm text-muted hover:text-alert transition-colors"
               >
-                清空購物車
+                {t.cart.clearCart}
               </button>
             </div>
           </div>
@@ -125,18 +128,18 @@ export default function CartPage() {
           {/* Order summary */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 p-6 bg-surface-alt rounded-2xl">
-              <h2 className="text-lg font-semibold text-primary mb-6">訂單摘要</h2>
+              <h2 className="text-lg font-semibold text-primary mb-6">{t.checkout.summary}</h2>
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
-                  <span className="text-secondary">商品小計</span>
+                  <span className="text-secondary">{t.cart.subtotal}</span>
                   <span className="font-medium">{formatPrice(totalPrice())}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-secondary">運費</span>
+                  <span className="text-secondary">{t.cart.shipping}</span>
                   <span className="font-medium">
                     {shippingFee === 0 ? (
-                      <span className="text-success">免運費</span>
+                      <span className="text-success">{t.cart.freeShipping}</span>
                     ) : (
                       formatPrice(shippingFee)
                     )}
@@ -144,7 +147,7 @@ export default function CartPage() {
                 </div>
                 {shippingFee > 0 && (
                   <p className="text-[11px] text-crocus">
-                    再消費 {formatPrice(1500 - totalPrice())} 即可免運
+                    {t.cart.freeShippingHint.replace('{amount}', formatPrice(1500 - totalPrice()))}
                   </p>
                 )}
               </div>
@@ -153,16 +156,16 @@ export default function CartPage() {
               <div className="flex gap-2 mb-6">
                 <input
                   type="text"
-                  placeholder="輸入優惠碼"
+                  placeholder={t.cart.couponPlaceholder}
                   className="flex-1 h-10 px-3 bg-surface border border-default rounded-full text-sm focus:outline-none focus:border-crocus"
                 />
                 <button className="h-10 px-4 bg-brand text-white text-sm font-medium rounded-full hover:bg-charcoal transition-colors">
-                  套用
+                  {t.cart.apply}
                 </button>
               </div>
 
               <div className="flex justify-between items-center pt-4 border-t border-default mb-6">
-                <span className="text-sm font-semibold text-primary">合計</span>
+                <span className="text-sm font-semibold text-primary">{t.cart.total}</span>
                 <span className="text-xl font-bold text-primary">
                   {formatPrice(totalPrice() + shippingFee)}
                 </span>
@@ -172,12 +175,12 @@ export default function CartPage() {
                 to="/checkout"
                 className="w-full flex items-center justify-center gap-2 h-12 bg-crocus hover:bg-crocus-hover text-white font-semibold rounded-full transition-all hover:scale-[1.01]"
               >
-                前往結帳
+                {t.cart.checkout}
                 <ArrowRight size={18} />
               </Link>
 
               <p className="text-[10px] text-muted text-center mt-4">
-                結帳即表示您同意我們的服務條款與隱私權政策
+                {t.cart.termsNotice}
               </p>
             </div>
           </div>
@@ -186,14 +189,14 @@ export default function CartPage() {
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-default bg-surface/95 backdrop-blur-xl lg:hidden">
           <div className="mx-auto flex max-w-[1280px] items-center gap-4 px-6 py-4">
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] font-medium tracking-[0.24em] uppercase text-muted">合計</p>
+              <p className="text-[10px] font-medium tracking-[0.24em] uppercase text-muted">{t.cart.total}</p>
               <p className="text-lg font-bold text-primary">{formatPrice(totalPrice() + shippingFee)}</p>
             </div>
             <Link
               to="/checkout"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-crocus px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-crocus-hover"
             >
-              前往結帳
+              {t.cart.checkout}
               <ArrowRight size={16} />
             </Link>
           </div>
@@ -202,3 +205,4 @@ export default function CartPage() {
     </div>
   );
 }
+
