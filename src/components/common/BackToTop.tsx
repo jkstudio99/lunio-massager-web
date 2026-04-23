@@ -31,7 +31,7 @@ export default function BackToTop() {
     <button
       onClick={scrollToTop}
       className={cn(
-        'fixed bottom-[114px] right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 shadow-lg active:scale-95 border border-default/50',
+        'fixed bottom-[92px] right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 shadow-lg active:scale-95 border border-default/50',
         // Forced white background as requested, even in dark mode
         'bg-white text-brand hover:bg-white/95 hover:shadow-brand/10',
         isVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
