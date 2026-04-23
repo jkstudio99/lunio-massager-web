@@ -1,4 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'MiSans TC VF';
+  src: local('MiSans TC VF'), local('MiSansTC VF'), local('MiSans TC'), local('MiSansTC');
+  font-display: swap;
+}
 
 @theme {
   /* Brand Colors - Lunio Palette */
@@ -36,8 +43,9 @@
   --color-alert: #E53935;
 
   /* Typography */
-  --font-sans: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
-  --font-display: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-display: 'Manrope', system-ui, sans-serif;
+  --font-cjk: 'MiSans TC VF', 'MiSans TC', 'Noto Sans TC', system-ui, sans-serif;
 
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }

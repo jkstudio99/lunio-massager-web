@@ -21,7 +21,7 @@ export default function Header() {
   const [langOpen, setLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const totalItems = useCartStore((s) => s.totalItems);
+  const cartCount = useCartStore((s) => s.items.reduce((sum, item) => sum + item.quantity, 0));
   const { theme, toggleTheme } = useTheme();
   const { locale, setLocale, t } = useI18n();
 
@@ -43,11 +43,11 @@ export default function Header() {
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isTransparent
           ? 'bg-transparent border-b border-transparent'
-          : 'bg-surface/90 backdrop-blur-xl border-b border-default'
+          : 'bg-surface/90 backdrop-blur-xl border-b border-default shadow-sm'
       )}
     >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <div className="flex h-16 items-center justify-between lg:h-[68px]">
+        <div className="flex h-16 items-center justify-between lg:h-[72px]">
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -168,8 +168,9 @@ export default function Header() {
               <User size={18} />
             </Link>
 
-            <Link
-              to="/cart"
+            <button
+              type="button"
+              onClick={() => useCartStore.getState().openDrawer()}
               className={cn(
                 'relative p-2.5 transition-colors',
                 isTransparent ? 'text-white/60 hover:text-white' : 'text-muted hover:text-primary'
@@ -177,12 +178,12 @@ export default function Header() {
               aria-label={t.nav.cart}
             >
               <ShoppingBag size={18} />
-              {totalItems() > 0 && (
-                <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-crocus text-white text-[9px] font-bold">
-                  {totalItems()}
+              {cartCount > 0 && (
+                <span className="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-crocus px-1 text-white text-[9px] font-bold">
+                  {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -36,22 +36,23 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#0a0a0a] text-white">
+    <footer className="bg-brand text-white">
       {/* Newsletter */}
       <div className="border-b border-white/10">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-14 lg:py-20">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
             <div>
-              <h3 className="text-lg font-semibold tracking-tight mb-1">{t.footer.newsletter}</h3>
-              <p className="text-white/50 text-sm">{t.footer.newsletterDesc}</p>
+              <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/55 mb-3">Stay in touch</p>
+              <h3 className="text-2xl lg:text-3xl font-bold tracking-[-0.03em] mb-2">{t.footer.newsletter}</h3>
+              <p className="text-white/60 text-sm max-w-xl">{t.footer.newsletterDesc}</p>
             </div>
-            <div className="flex w-full lg:w-auto gap-3">
+            <div className="flex w-full lg:w-auto flex-col sm:flex-row gap-3">
               <input
                 type="email"
                 placeholder={t.footer.emailPlaceholder}
-                className="flex-1 lg:w-80 h-11 px-5 bg-white/5 border border-white/10 rounded-full text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-crocus focus:ring-1 focus:ring-crocus/30 transition-colors"
+                className="w-full sm:flex-1 lg:w-80 h-12 px-5 bg-white/8 border border-white/10 rounded-full text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-crocus focus:ring-1 focus:ring-crocus/30 transition-colors"
               />
-              <button className="h-11 px-6 bg-crocus hover:bg-crocus-hover text-white text-sm font-medium rounded-full transition-colors whitespace-nowrap">
+              <button className="h-12 px-6 bg-crocus hover:bg-crocus-hover text-white text-sm font-medium rounded-full transition-colors whitespace-nowrap w-full sm:w-auto">
                 {t.footer.subscribe}
               </button>
             </div>
@@ -65,9 +66,9 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="inline-block mb-5">
-              <img src="/img/lunio logo.png" alt="Lunio" className="h-7 brightness-0 invert" />
+              <img src="/img/lunio logo white.png" alt="Lunio" className="h-7" />
             </Link>
-            <p className="text-white/40 text-sm leading-relaxed mb-6 max-w-[280px]">
+            <p className="text-white/55 text-sm leading-relaxed mb-6 max-w-[280px]">
               {t.footer.tagline}
             </p>
             <div className="flex gap-2">
@@ -75,7 +76,7 @@ export default function Footer() {
                 <a
                   key={i}
                   href="#"
-                  className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 hover:bg-crocus text-white/60 hover:text-white transition-all"
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 hover:bg-crocus text-white/70 hover:text-white transition-all"
                   aria-label="Social link"
                 >
                   <Icon size={16} />
@@ -93,7 +94,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className="text-sm text-white/40 hover:text-crocus transition-colors"
+                      className="text-sm text-white/55 hover:text-crocus transition-colors"
                     >
                       {link.name}
                     </Link>
@@ -108,12 +109,12 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/5">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/30">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/35">
             <p>{t.footer.copyright}</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white/50 transition-colors">{t.footer.privacyPolicy}</a>
-              <a href="#" className="hover:text-white/50 transition-colors">{t.footer.termsOfService}</a>
-              <a href="#" className="hover:text-white/50 transition-colors">{t.footer.cookieSettings}</a>
+              <a href="#" className="hover:text-white/55 transition-colors">{t.footer.privacyPolicy}</a>
+              <a href="#" className="hover:text-white/55 transition-colors">{t.footer.termsOfService}</a>
+              <a href="#" className="hover:text-white/55 transition-colors">{t.footer.cookieSettings}</a>
             </div>
           </div>
         </div>

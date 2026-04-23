@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { SlidersHorizontal, Grid3X3, List, ChevronDown } from 'lucide-react';
+import { SlidersHorizontal, Grid3X3, List, ChevronDown, ArrowRight } from 'lucide-react';
 import ProductCard from '@/components/product/ProductCard';
 import { products, categories } from '@/data/products';
 import { cn } from '@/lib/utils';
@@ -14,6 +14,10 @@ export default function ProductListPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<SortOption>('popular');
   const activeCategory = searchParams.get('category') as ProductCategory | null;
+
+  const activeCategoryData = activeCategory
+    ? categories.find((c) => c.id === activeCategory)
+    : null;
 
   const filtered = useMemo(() => {
     let result = [...products];
@@ -47,33 +51,68 @@ export default function ProductListPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      {/* Header */}
-      <div className="bg-surface-alt">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-8 py-12 lg:py-16">
+      {/* Hero header */}
+      <section className="relative overflow-hidden bg-brand text-white">
+        <div className="absolute inset-0">
+          <img
+            src={activeCategoryData?.image ?? '/images/categories/boot.jpg'}
+            alt=""
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand/95 via-brand/80 to-brand/55" />
+        </div>
+        <div className="relative mx-auto max-w-[1400px] px-6 lg:px-10 py-16 lg:py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.55 }}
+            className="max-w-3xl"
           >
-            <h1 className="text-3xl lg:text-4xl font-bold text-primary mb-2">
-              {activeCategory
-                ? categories.find((c) => c.id === activeCategory)?.name ?? '所有產品'
-                : '所有產品'}
-            </h1>
-            <p className="text-muted">
-              {activeCategory
-                ? categories.find((c) => c.id === activeCategory)?.description
-                : '探索我們全系列專業按摩器產品'}
+            <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-white/55 mb-4">
+              Collections
             </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-[-0.03em] leading-tight mb-5">
+              {activeCategoryData?.name ?? '所有產品'}
+            </h1>
+            <p className="text-white/70 text-base sm:text-lg leading-relaxed max-w-2xl mb-8">
+              {activeCategoryData?.description ?? '探索我們全系列專業按摩器產品'}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => setCategory(null)}
+                className={cn(
+                  'px-5 py-2.5 rounded-full text-sm font-medium transition-colors',
+                  !activeCategory
+                    ? 'bg-crocus text-white'
+                    : 'bg-white/10 text-white/80 hover:bg-white/15'
+                )}
+              >
+                全部
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setCategory(cat.id)}
+                  className={cn(
+                    'px-5 py-2.5 rounded-full text-sm font-medium transition-colors',
+                    activeCategory === cat.id
+                      ? 'bg-crocus text-white'
+                      : 'bg-white/10 text-white/80 hover:bg-white/15'
+                  )}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
           </motion.div>
         </div>
-      </div>
+      </section>
 
-      <div className="mx-auto max-w-[1280px] px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-10 lg:py-14">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Sidebar filters */}
-          <aside className="lg:w-56 flex-shrink-0">
-            <div className="lg:sticky lg:top-24">
+          <aside className="lg:w-64 flex-shrink-0">
+            <div className="lg:sticky lg:top-24 rounded-3xl border border-default bg-surface-alt p-4 sm:p-5">
               <h3 className="text-sm font-semibold text-primary mb-4 flex items-center gap-2">
                 <SlidersHorizontal size={16} />
                 產品分類
@@ -82,10 +121,10 @@ export default function ProductListPage() {
                 <button
                   onClick={() => setCategory(null)}
                   className={cn(
-                    'px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
+                    'px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
                     !activeCategory
                       ? 'bg-brand text-white'
-                      : 'bg-surface-alt text-secondary hover:bg-light-gray'
+                      : 'bg-surface text-secondary hover:bg-light-gray'
                   )}
                 >
                   全部
@@ -95,10 +134,10 @@ export default function ProductListPage() {
                     key={cat.id}
                     onClick={() => setCategory(cat.id)}
                     className={cn(
-                      'px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
+                      'px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
                       activeCategory === cat.id
                         ? 'bg-brand text-white'
-                        : 'bg-surface-alt text-secondary hover:bg-light-gray'
+                        : 'bg-surface text-secondary hover:bg-light-gray'
                     )}
                   >
                     {cat.name}
@@ -109,14 +148,14 @@ export default function ProductListPage() {
           </aside>
 
           {/* Main content */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {/* Toolbar */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-default">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-default">
               <p className="text-sm text-muted">
                 顯示 <span className="font-semibold text-primary">{filtered.length}</span> 件商品
               </p>
-              <div className="flex items-center gap-3">
-                <div className="relative">
+              <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+                <div className="relative min-w-[140px]">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as SortOption)}
@@ -129,16 +168,16 @@ export default function ProductListPage() {
                   </select>
                   <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted" />
                 </div>
-                <div className="hidden sm:flex border border-default rounded-lg overflow-hidden">
+                <div className="hidden sm:flex border border-default rounded-lg overflow-hidden bg-surface-alt">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={cn('p-2 transition-colors', viewMode === 'grid' ? 'bg-brand text-white' : 'text-muted hover:bg-surface-alt')}
+                    className={cn('p-2 transition-colors', viewMode === 'grid' ? 'bg-brand text-white' : 'text-muted hover:bg-surface')}
                   >
                     <Grid3X3 size={16} />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={cn('p-2 transition-colors', viewMode === 'list' ? 'bg-brand text-white' : 'text-muted hover:bg-surface-alt')}
+                    className={cn('p-2 transition-colors', viewMode === 'list' ? 'bg-brand text-white' : 'text-muted hover:bg-surface')}
                   >
                     <List size={16} />
                   </button>
@@ -149,9 +188,9 @@ export default function ProductListPage() {
             {/* Products grid */}
             <div
               className={cn(
-                'grid gap-6',
+                'grid gap-4 sm:gap-6',
                 viewMode === 'grid'
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+                  ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
                   : 'grid-cols-1'
               )}
             >
@@ -163,6 +202,12 @@ export default function ProductListPage() {
             {filtered.length === 0 && (
               <div className="text-center py-20">
                 <p className="text-muted">目前此分類沒有產品</p>
+                <button
+                  onClick={() => setCategory(null)}
+                  className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-crocus hover:text-crocus-hover transition-colors"
+                >
+                  返回全部產品 <ArrowRight size={14} />
+                </button>
               </div>
             )}
           </div>

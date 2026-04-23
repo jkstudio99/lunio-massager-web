@@ -36,7 +36,7 @@ export default function CartPage() {
 
   return (
     <div className="bg-surface min-h-screen">
-      <div className="mx-auto max-w-[1280px] px-6 lg:px-8 py-8 lg:py-12">
+      <div className="mx-auto max-w-[1280px] px-6 lg:px-8 py-8 lg:py-12 pb-28 lg:pb-12">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,6 +180,22 @@ export default function CartPage() {
                 結帳即表示您同意我們的服務條款與隱私權政策
               </p>
             </div>
+          </div>
+        </div>
+
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-default bg-surface/95 backdrop-blur-xl lg:hidden">
+          <div className="mx-auto flex max-w-[1280px] items-center gap-4 px-6 py-4">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-medium tracking-[0.24em] uppercase text-muted">合計</p>
+              <p className="text-lg font-bold text-primary">{formatPrice(totalPrice() + shippingFee)}</p>
+            </div>
+            <Link
+              to="/checkout"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-crocus px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-crocus-hover"
+            >
+              前往結帳
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </div>

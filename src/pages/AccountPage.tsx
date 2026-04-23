@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Package, MapPin, Heart, LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Package, MapPin, Heart, LogIn, Mail, Lock, Eye, EyeOff, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type Tab = 'login' | 'register';
@@ -98,10 +98,10 @@ export default function AccountPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <button className="h-11 border border-default rounded-lg text-sm font-medium text-secondary hover:bg-surface-alt transition-colors flex items-center justify-center gap-2">
-                  <span className="text-lg">🔵</span> Google
+                  <Mail size={18} className="text-[#4285F4]" /> Google
                 </button>
                 <button className="h-11 border border-default rounded-lg text-sm font-medium text-secondary hover:bg-surface-alt transition-colors flex items-center justify-center gap-2">
-                  <span className="text-lg">💚</span> LINE
+                  <MessageCircle size={18} className="text-[#00B900]" /> LINE
                 </button>
               </div>
             </div>
