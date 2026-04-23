@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Star, ChevronRight, ChevronLeft } from 'lucide-react';
 import ProductCard from '@/components/product/ProductCard';
-import { products, categories, reviews } from '@/data/products';
+import { products, reviews } from '@/data/products';
 import { useI18n } from '@/store/i18n';
 import heroCover1 from '@/assets/img/Cover.jpg';
 import heroCover2 from '@/assets/img/Cover2.jpg';
