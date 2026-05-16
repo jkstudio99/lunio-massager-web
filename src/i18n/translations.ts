@@ -545,6 +545,16 @@ const translations = {
       addedToWishlist: '已加入收藏',
       removedFromWishlist: '已從收藏移除',
     },
+    share: {
+      share: '分享',
+      shareVia: '分享至',
+      copyLink: '複製連結',
+      copied: '已複製！',
+      linkCopied: '連結已複製到剪貼簿',
+      copyFailed: '複製失敗',
+      more: '更多分享方式',
+      shareProduct: '分享商品',
+    },
   },
   en: {
     nav: {
@@ -1060,6 +1070,16 @@ const translations = {
       removedFromCart: 'Removed from cart',
       addedToWishlist: 'Added to wishlist',
       removedFromWishlist: 'Removed from wishlist',
+    },
+    share: {
+      share: 'Share',
+      shareVia: 'Share via',
+      copyLink: 'Copy Link',
+      copied: 'Copied!',
+      linkCopied: 'Link copied to clipboard',
+      copyFailed: 'Failed to copy',
+      more: 'More options',
+      shareProduct: 'Share Product',
     },
   },
 } as const;

@@ -1,9 +1,10 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock, ArrowLeft, ArrowRight, Calendar, User, Tag, MapPin, Phone, Share2 } from 'lucide-react';
+import { Clock, ArrowLeft, ArrowRight, Calendar, User, Tag, MapPin, Phone } from 'lucide-react';
 import { useI18n } from '@/store/i18n';
 import { getBlogBySlug, getRelatedPosts, blogPosts } from '@/data/blog';
 import CommentSection from '@/components/blog/CommentSection';
+import ShareMenu from '@/components/common/ShareMenu';
 
 export default function BlogDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -109,9 +110,13 @@ export default function BlogDetailPage() {
                 <p className="text-sm font-semibold text-primary">{post.author.name}</p>
                 <p className="text-xs text-muted">{post.author.role[locale]}</p>
               </div>
-              <button className="ml-auto inline-flex items-center gap-1.5 text-xs text-muted hover:text-crocus transition-colors">
-                <Share2 size={14} /> {t.blog.shareArticle}
-              </button>
+              <div className="ml-auto">
+                <ShareMenu
+                  url={window.location.href}
+                  title={post.title[locale]}
+                  variant="inline"
+                />
+              </div>
             </div>
 
             {/* Article content */}

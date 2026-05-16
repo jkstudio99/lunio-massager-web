@@ -25,6 +25,7 @@ import { formatPrice, getDiscountPercent } from '@/lib/utils';
 import ProductCard from '@/components/product/ProductCard';
 import ProductReviewSection from '@/components/product/ProductReviewSection';
 import RecentlyViewed from '@/components/product/RecentlyViewed';
+import ShareMenu from '@/components/common/ShareMenu';
 import { useI18n } from '@/store/i18n';
 
 const fadeUp = {
@@ -319,6 +320,15 @@ export default function ProductDetailPage() {
                     <span className="text-[11px] text-secondary font-medium">{text}</span>
                   </div>
                 ))}
+              </div>
+
+              {/* Share product */}
+              <div className="mt-4 flex justify-center">
+                <ShareMenu
+                  url={`${window.location.origin}/product/${product.slug}`}
+                  title={product.name}
+                  variant="button"
+                />
               </div>
             </motion.div>
           </div>
