@@ -1,73 +1,112 @@
-# React + TypeScript + Vite
+# Lunio Massager - E-Commerce Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce web application for Lunio massage products, built with React 19, TypeScript, and Tailwind CSS v4.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework:** React 19 + TypeScript 5.9
+- **Build Tool:** Vite 8
+- **Styling:** Tailwind CSS v4 + Framer Motion
+- **State Management:** Zustand (with persist middleware)
+- **Authentication:** Firebase Auth (Google + LINE Login)
+- **i18n:** Custom Zustand-based store (zh-TW / en)
+- **Icons:** Lucide React + React Icons
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Product Catalog** - Browse products with filtering and grid/list views
+- **Product Detail** - Feature cards, massage modes, specs, and related products
+- **Shopping Cart** - Drawer cart with quantity controls and checkout flow
+- **Wishlist** - Save favorite products with localStorage persistence
+- **Blog** - Articles with categories, detail pages, and comment section
+- **Search Overlay** - Full-screen search with Cmd+K shortcut and real-time filtering
+- **Dark Mode** - Toggle between light/dark/system themes
+- **Authentication** - Google and LINE social login via Firebase Auth
+- **Account Dashboard** - Profile, order tracking, address book, settings
+- **i18n** - Full bilingual support (Traditional Chinese / English)
+- **Responsive Design** - Mobile-first layout across all pages
 
-## Expanding the ESLint configuration
+## Pages
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Route | Page |
+|---|---|
+| `/` | Home |
+| `/products` | Product Listing |
+| `/products/:slug` | Product Detail |
+| `/cart` | Cart |
+| `/checkout` | Checkout |
+| `/blog` | Blog |
+| `/blog/:slug` | Blog Detail |
+| `/wishlist` | Wishlist |
+| `/account` | Account (Login / Dashboard) |
+| `/about` | About Us |
+| `/support` | Support |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Copy `.env.example` to `.env` and fill in your credentials:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
+```
+
+| Variable | Description |
+|---|---|
+| `VITE_FIREBASE_API_KEY` | Firebase API Key |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Auth Domain |
+| `VITE_FIREBASE_PROJECT_ID` | Firebase Project ID |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase Storage Bucket |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase Messaging Sender ID |
+| `VITE_FIREBASE_APP_ID` | Firebase App ID |
+| `VITE_LINE_CHANNEL_ID` | LINE Login Channel ID |
+| `VITE_LINE_REDIRECT_URI` | LINE Login Redirect URI |
+
+### Development
+
+```bash
+npm run dev
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+src/
+  components/
+    blog/          # CommentSection
+    cart/          # CartDrawer
+    common/        # SearchOverlay, ThemeToggle
+    home/          # Hero, Benefits, etc.
+    layout/        # Header, Footer
+    product/       # ProductCard
+  data/            # Products, blog posts, comments (mock)
+  i18n/            # Translations (zh-TW, en)
+  lib/             # Firebase config
+  pages/           # Route pages
+  store/           # Zustand stores (auth, cart, i18n, search, theme, wishlist)
+  types/           # TypeScript types
 ```
