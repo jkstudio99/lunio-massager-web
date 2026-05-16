@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft, X } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
+import { useCouponStore } from '@/store/coupon';
+import { useToastStore } from '@/store/toast';
 import { formatPrice } from '@/lib/utils';
 
 import { useI18n } from '@/store/i18n';
@@ -9,6 +12,9 @@ import { useI18n } from '@/store/i18n';
 export default function CartPage() {
   const { t } = useI18n();
   const { items, removeItem, updateQuantity, clearCart, totalPrice } = useCartStore();
+  const { appliedCoupon, applyCoupon, removeCoupon, getDiscount } = useCouponStore();
+  const addToast = useToastStore((s) => s.addToast);
+  const [couponCode, setCouponCode] = useState('');
 
   if (items.length === 0) {
     return (
@@ -153,21 +159,61 @@ export default function CartPage() {
               </div>
 
               {/* Coupon */}
-              <div className="flex gap-2 mb-6">
-                <input
-                  type="text"
-                  placeholder={t.cart.couponPlaceholder}
-                  className="flex-1 h-10 px-3 bg-surface border border-default rounded-full text-sm focus:outline-none focus:border-crocus"
-                />
-                <button className="h-10 px-4 bg-brand text-white text-sm font-medium rounded-full hover:bg-charcoal transition-colors">
-                  {t.cart.apply}
-                </button>
-              </div>
+              {appliedCoupon ? (
+                <div className="flex items-center justify-between mb-4 p-3 rounded-xl bg-crocus/8 border border-crocus/20">
+                  <div>
+                    <p className="text-sm font-semibold text-crocus">{appliedCoupon.code}</p>
+                    <p className="text-xs text-muted">
+                      {appliedCoupon.type === 'percent' ? `${appliedCoupon.value}% off` : `−${formatPrice(appliedCoupon.value)}`}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => { removeCoupon(); addToast(t.cart.couponRemoved, 'info'); }}
+                    className="text-muted hover:text-primary transition-colors"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2 mb-4">
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    placeholder={t.cart.couponPlaceholder}
+                    className="flex-1 h-10 px-3 bg-surface border border-default rounded-full text-sm focus:outline-none focus:border-crocus"
+                  />
+                  <button
+                    onClick={() => {
+                      const result = applyCoupon(couponCode, totalPrice());
+                      if (result.success) {
+                        addToast(t.cart.couponApplied.replace('{code}', couponCode.toUpperCase()), 'success');
+                        setCouponCode('');
+                      } else if (result.error === 'minOrder') {
+                        addToast(t.cart.couponMinOrder.replace('{amount}', formatPrice(3000)), 'error');
+                      } else {
+                        addToast(t.cart.couponInvalid, 'error');
+                      }
+                    }}
+                    className="h-10 px-4 bg-brand text-white text-sm font-medium rounded-full hover:bg-charcoal transition-colors"
+                  >
+                    {t.cart.apply}
+                  </button>
+                </div>
+              )}
+
+              {/* Discount line */}
+              {appliedCoupon && (
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-crocus">{t.cart.discount}</span>
+                  <span className="text-sm font-semibold text-crocus">−{formatPrice(getDiscount(totalPrice()))}</span>
+                </div>
+              )}
 
               <div className="flex justify-between items-center pt-4 border-t border-default mb-6">
                 <span className="text-sm font-semibold text-primary">{t.cart.total}</span>
                 <span className="text-xl font-bold text-primary">
-                  {formatPrice(totalPrice() + shippingFee)}
+                  {formatPrice(totalPrice() + shippingFee - getDiscount(totalPrice()))}
                 </span>
               </div>
 

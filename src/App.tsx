@@ -7,6 +7,7 @@ import FloatingContact from '@/components/common/FloatingContact';
 import BackToTop from '@/components/common/BackToTop';
 import CartDrawer from '@/components/cart/CartDrawer';
 import SearchOverlay from '@/components/common/SearchOverlay';
+import ToastContainer from '@/components/common/ToastContainer';
 import HomePage from '@/pages/HomePage';
 import ProductListPage from '@/pages/ProductListPage';
 import ProductDetailPage from '@/pages/ProductDetailPage';
@@ -33,6 +34,7 @@ export default function App() {
       <BackToTop />
       <CartDrawer />
       <SearchOverlay />
+      <ToastContainer />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />

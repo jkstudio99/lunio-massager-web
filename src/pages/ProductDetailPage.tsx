@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -19,8 +19,12 @@ import {
 import { products } from '@/data/products';
 import { useCartStore } from '@/store/cart';
 import { useWishlistStore } from '@/store/wishlist';
+import { useRecentlyViewedStore } from '@/store/recentlyViewed';
+import { useToastStore } from '@/store/toast';
 import { formatPrice, getDiscountPercent } from '@/lib/utils';
 import ProductCard from '@/components/product/ProductCard';
+import ProductReviewSection from '@/components/product/ProductReviewSection';
+import RecentlyViewed from '@/components/product/RecentlyViewed';
 import { useI18n } from '@/store/i18n';
 
 const fadeUp = {
@@ -45,11 +49,27 @@ export default function ProductDetailPage() {
   const isInCart = useCartStore((s) => s.items.some((item) => item.product.id === product?.id));
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isInWishlist = useWishlistStore((s) => s.isInWishlist(product?.id ?? ''));
+  const addRecentlyViewed = useRecentlyViewedStore((s) => s.addItem);
+  const addToast = useToastStore((s) => s.addToast);
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [activeMode, setActiveMode] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(0);
+
+  // Track recently viewed
+  useEffect(() => {
+    if (product) {
+      addRecentlyViewed({
+        id: product.id,
+        slug: product.slug,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        image: product.gallery[0]?.src || '',
+      });
+    }
+  }, [product?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!product) {
     return (
@@ -249,6 +269,7 @@ export default function ProductDetailPage() {
                     addItem(product, quantity);
                     openDrawer();
                     setQuantity(1);
+                    addToast(t.toast.addedToCart, 'success');
                   }}
                   className="flex-1 flex items-center justify-center gap-2 h-12 bg-crocus hover:bg-crocus-hover text-white font-semibold rounded-full transition-all hover:scale-[1.01] shadow-lg shadow-crocus/20"
                 >
@@ -260,7 +281,12 @@ export default function ProductDetailPage() {
               {/* Wishlist button */}
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => product && toggleWishlist(product)}
+                onClick={() => {
+                  if (!product) return;
+                  const wasInWishlist = isInWishlist;
+                  toggleWishlist(product);
+                  addToast(wasInWishlist ? t.toast.removedFromWishlist : t.toast.addedToWishlist, wasInWishlist ? 'info' : 'success');
+                }}
                 className={`flex w-full items-center justify-center gap-2 h-11 rounded-full border text-sm font-medium transition-all mb-6 ${
                   isInWishlist
                     ? 'border-red-300 bg-red-50 text-red-600 hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-400'
@@ -780,7 +806,13 @@ export default function ProductDetailPage() {
         </motion.div>
       </section>
 
-      {/* ───────── 11. RELATED PRODUCTS ───────── */}
+      {/* ───────── 11. PRODUCT REVIEWS ───────── */}
+      <ProductReviewSection productId={product.id} />
+
+      {/* ───────── 12. RECENTLY VIEWED ───────── */}
+      <RecentlyViewed excludeId={product.id} />
+
+      {/* ───────── 13. RELATED PRODUCTS ───────── */}
       {relatedProducts.length > 0 && (
         <section className="py-20 lg:py-28 bg-surface">
           <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
