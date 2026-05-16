@@ -1,16 +1,22 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type Theme = 'light' | 'dark';
+type Theme = 'light' | 'dark' | 'system';
 
 interface ThemeState {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
+  initTheme: () => void;
+}
+
+function getSystemTheme(): 'light' | 'dark' {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function applyTheme(theme: Theme) {
-  document.documentElement.classList.toggle('dark', theme === 'dark');
+  const resolved = theme === 'system' ? getSystemTheme() : theme;
+  document.documentElement.classList.toggle('dark', resolved === 'dark');
 }
 
 export const useTheme = create<ThemeState>()(
@@ -22,9 +28,22 @@ export const useTheme = create<ThemeState>()(
         set({ theme });
       },
       toggleTheme: () => {
-        const next: Theme = get().theme === 'light' ? 'dark' : 'light';
+        const current = get().theme;
+        const next: Theme = current === 'light' ? 'dark' : 'light';
         applyTheme(next);
         set({ theme: next });
+      },
+      initTheme: () => {
+        const theme = get().theme;
+        applyTheme(theme);
+
+        // Listen for system preference changes when in 'system' mode
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        mq.addEventListener('change', () => {
+          if (get().theme === 'system') {
+            applyTheme('system');
+          }
+        });
       },
     }),
     {
@@ -39,3 +58,10 @@ export const useTheme = create<ThemeState>()(
     }
   )
 );
+
+/** Resolved theme for conditional rendering (never 'system') */
+export function useResolvedTheme(): 'light' | 'dark' {
+  const theme = useTheme((s) => s.theme);
+  if (theme === 'system') return getSystemTheme();
+  return theme;
+}

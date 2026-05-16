@@ -63,6 +63,14 @@ export interface ProductDetailMedia {
   ergonomic?: MediaAsset;
 }
 
+export interface ColorVariant {
+  id: string;
+  name: LocalizedText;
+  colorHex: string;
+  images: MediaAsset[];
+  theme?: ProductTheme;
+}
+
 export interface Product {
   id: string;
   sku: string;
@@ -77,13 +85,14 @@ export interface Product {
   comparePrice?: number;
   category: ProductCategory;
   images: string[];
-  features: string[];
+  features: LocalizedText[];
   specs: Record<string, string>;
   stock: number;
   rating: number;
   reviewCount: number;
   isNew?: boolean;
   isBestSeller?: boolean;
+  colorVariants?: ColorVariant[];
   heroImage: MediaAsset;
   heroImages: MediaAsset[];
   gallery: MediaAsset[];

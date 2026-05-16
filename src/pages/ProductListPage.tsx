@@ -75,7 +75,7 @@ export default function ProductListPage() {
               Collections
             </p>
             <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-[-0.03em] leading-tight mb-5">
-              {activeCategoryData ? t.categories[activeCategoryData.id as keyof typeof t.categories] : t.nav.products}
+              {activeCategoryData ? (t.categoryData[activeCategoryData.id as keyof typeof t.categoryData]?.name ?? activeCategoryData.name) : t.nav.products}
             </h1>
             <h2 className="text-white/70 text-base sm:text-lg leading-relaxed max-w-2xl mb-8">
               {activeCategoryData ? t.sections.categoriesDesc : t.footer.tagline}
@@ -103,7 +103,7 @@ export default function ProductListPage() {
                       : 'bg-white/10 text-white/80 hover:bg-white/15'
                   )}
                 >
-                  {t.categories[cat.id as keyof typeof t.categories]}
+                  {t.categoryData[cat.id as keyof typeof t.categoryData]?.name ?? cat.name}
                 </button>
               ))}
             </div>
@@ -143,7 +143,7 @@ export default function ProductListPage() {
                         : 'bg-surface text-secondary hover:bg-light-gray'
                     )}
                   >
-                    {t.categories[cat.id as keyof typeof t.categories]}
+                    {t.categoryData[cat.id as keyof typeof t.categoryData]?.name ?? cat.name}
                   </button>
                 ))}
               </div>

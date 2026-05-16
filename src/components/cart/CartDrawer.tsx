@@ -176,7 +176,7 @@ export default function CartDrawer() {
                 <button
                   type="button"
                   onClick={closeDrawer}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-default px-5 py-3 text-sm font-semibold text-primary transition-colors hover:border-medium-gray"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-default px-5 text-sm font-semibold text-primary transition-colors hover:border-medium-gray"
                 >
                   {t.cart.continueShopping}
                 </button>
@@ -186,7 +186,7 @@ export default function CartDrawer() {
                     closeDrawer();
                     navigate('/checkout');
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-crocus px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-crocus/20 transition-all hover:bg-crocus-hover"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-crocus px-5 text-sm font-semibold text-white shadow-lg shadow-crocus/20 transition-all hover:bg-crocus-hover"
                 >
                   {t.cart.checkout}
                   <ArrowRight size={16} />

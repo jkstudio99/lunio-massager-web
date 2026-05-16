@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { Star, ArrowRight, ShoppingBag, Check } from 'lucide-react';
+import { Star, ArrowRight, ShoppingBag, Check, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Product } from '@/types/product';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
 import { useI18n } from '@/store/i18n';
 
 interface ProductCardProps {
@@ -15,6 +16,8 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const openDrawer = useCartStore((s) => s.openDrawer);
   const isInCart = useCartStore((s) => s.items.some((item) => item.product.id === product.id));
+  const toggleWishlist = useWishlistStore((s) => s.toggleItem);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist(product.id));
   const { t } = useI18n();
   const discount = product.comparePrice ? product.comparePrice - product.price : 0;
 
@@ -42,6 +45,23 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             New
           </span>
         )}
+        <motion.button
+          whileTap={{ scale: 1.3 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWishlist(product);
+          }}
+          className={`absolute ${product.isNew ? 'right-4 top-14' : 'right-4 top-4'} z-10 flex h-9 w-9 items-center justify-center rounded-full backdrop-blur-sm transition-colors ${
+            isInWishlist
+              ? 'bg-red-500/90 text-white'
+              : 'bg-white/80 text-secondary hover:bg-white hover:text-red-500'
+          }`}
+          aria-label={isInWishlist ? t.wishlist.removeFromWishlist : t.wishlist.addToWishlist}
+        >
+          <Heart size={16} className={isInWishlist ? 'fill-current' : ''} />
+        </motion.button>
         <img
           src={product.images[0]}
           alt={product.name}
@@ -103,21 +123,21 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {t.product.yearWarranty} · {t.product.freeShipping}
         </p>
 
-        <div className="mt-auto grid grid-cols-2 gap-3">
+        <div className="mt-auto flex gap-2">
           <Link
             to={`/product/${product.slug}`}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-default px-4 py-3 text-sm font-medium text-primary transition-colors hover:border-crocus hover:text-crocus"
+            className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-default px-4 py-2 text-xs sm:text-sm font-medium text-primary transition-colors hover:border-crocus hover:text-crocus"
           >
             {t.sections.viewDetail}
-            <ArrowRight size={15} />
+            <ArrowRight size={14} className="shrink-0" />
           </Link>
           <button
             onClick={handleCartAction}
-            className={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-medium text-white transition-all ${
+            className={`inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-2 text-xs sm:text-sm font-medium text-white transition-all ${
               isInCart ? 'bg-crocus hover:bg-crocus-hover' : 'bg-brand hover:bg-crocus'
             }`}
           >
-            {isInCart ? <Check size={16} /> : <ShoppingBag size={16} />}
+            {isInCart ? <Check size={14} className="shrink-0" /> : <ShoppingBag size={14} className="shrink-0" />}
             {isInCart ? t.product.addedToCart : t.product.addToCart}
           </button>
         </div>

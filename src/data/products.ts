@@ -106,7 +106,7 @@ export const products: Product[] = [
     id: '1',
     sku: 'CALF-01',
     name: 'Lunio 智能小腿按摩器',
-    nameEn: 'Lunio Smart Calf Massager',
+    nameEn: 'Lunio Calf Massager',
     slug: 'lunio-calf-pro-massager',
     description:
       '輕量包覆小腿線條，透過節奏氣壓、柔和溫感與可攜式設計，讓久坐、久站與運動後的疲勞，在日常場景中也能迅速被整理乾淨。它不是一台只在休息日才會打開的設備，而是可以自然進入工作與生活節奏的舒壓單品。',
@@ -122,6 +122,35 @@ export const products: Product[] = [
     rating: 4.8,
     reviewCount: 286,
     isBestSeller: true,
+    colorVariants: [
+      {
+        id: 'calf-purple',
+        name: lt('幻境紫', 'Crocus Purple'),
+        colorHex: '#9786f3',
+        images: [
+          media('/media/products/calf/1.png', 'Lunio 小腿按摩器 幻境紫正面', 'Lunio Calf Massager Crocus Purple front', { fit: 'contain' }),
+          media('/media/products/calf/3.png', 'Lunio 小腿按摩器 幻境紫側面', 'Lunio Calf Massager Crocus Purple side', { fit: 'contain' }),
+          media('/media/products/calf/6.png', 'Lunio 小腿按摩器 幻境紫穿著', 'Lunio Calf Massager Crocus Purple worn', { fit: 'contain' }),
+        ],
+      },
+      {
+        id: 'calf-pink',
+        name: lt('櫻花粉', 'Sakura Pink'),
+        colorHex: '#f4c2d0',
+        images: [
+          media('/media/products/calf/pink-1.png', 'Lunio 小腿按摩器 櫻花粉正面', 'Lunio Calf Massager Sakura Pink front', { fit: 'contain' }),
+          media('/media/products/calf/pink-2.png', 'Lunio 小腿按摩器 櫻花粉側面', 'Lunio Calf Massager Sakura Pink side', { fit: 'contain' }),
+          media('/media/products/calf/pink-3.png', 'Lunio 小腿按摩器 櫻花粉穿著', 'Lunio Calf Massager Sakura Pink worn', { fit: 'contain' }),
+        ],
+        theme: {
+          accent: '#e8a0b5',
+          accentSoft: '#f8d6e2',
+          accentMute: '#fce8ef',
+          contrast: '#141414',
+          surface: '#fdf0f4',
+        },
+      },
+    ],
     heroImage: media('/media/products/calf/20260304-lunio33422.jpg', '穿著 Lunio 小腿按摩器的辦公室情境照', 'Lunio calf massager office lifestyle image', {
       aspectRatio: '4 / 5',
     }),
@@ -251,10 +280,10 @@ export const products: Product[] = [
       ergonomic: calfCutouts[2],
     },
     features: [
-      '小腿包覆氣壓節奏',
-      '柔和溫感輔助',
-      '15 分鐘自動定時',
-      '輕量攜帶設計',
+      lt('小腿包覆氣壓節奏', 'Rhythmic Air Compression for Calves'),
+      lt('柔和溫感輔助', 'Gentle Heat Therapy'),
+      lt('15 分鐘自動定時', '15-Min Auto Timer'),
+      lt('輕量攜帶設計', 'Lightweight Portable Design'),
     ],
     specs: {
       按摩部位: '小腿',
@@ -271,7 +300,7 @@ export const products: Product[] = [
     id: '2',
     sku: 'BOOT-01',
     name: 'Lunio 智能靴型按摩器',
-    nameEn: 'Lunio Smart Massage Boots',
+    nameEn: 'Lunio Boot Massager',
     slug: 'lunio-boot-360-massager',
     description:
       '從足底延伸到小腿的靴型包覆，把大範圍下半身疲勞一次完整整理。它保留 Lunio 的俐落外觀與品牌語言，同時把更高覆蓋率、更沉浸的放鬆感，濃縮進日常使用的 15 分鐘儀式裡。',
@@ -288,6 +317,35 @@ export const products: Product[] = [
     reviewCount: 412,
     isNew: true,
     isBestSeller: true,
+    colorVariants: [
+      {
+        id: 'boot-purple',
+        name: lt('星夜紫', 'Plum Night'),
+        colorHex: '#2d274a',
+        images: [
+          media('/media/products/boot/1.png', 'Lunio 靴型按摩器 星夜紫正面', 'Lunio Boot Massager Plum Night front', { fit: 'contain' }),
+          media('/media/products/boot/3.png', 'Lunio 靴型按摩器 星夜紫側面', 'Lunio Boot Massager Plum Night side', { fit: 'contain' }),
+          media('/media/products/boot/6.png', 'Lunio 靴型按摩器 星夜紫穿著', 'Lunio Boot Massager Plum Night worn', { fit: 'contain' }),
+        ],
+      },
+      {
+        id: 'boot-white',
+        name: lt('皓月白', 'Titan White'),
+        colorHex: '#f5f5f0',
+        images: [
+          media('/media/products/boot/white-1.png', 'Lunio 靴型按摩器 皓月白正面', 'Lunio Boot Massager Titan White front', { fit: 'contain' }),
+          media('/media/products/boot/white-2.png', 'Lunio 靴型按摩器 皓月白側面', 'Lunio Boot Massager Titan White side', { fit: 'contain' }),
+          media('/media/products/boot/white-3.png', 'Lunio 靴型按摩器 皓月白穿著', 'Lunio Boot Massager Titan White worn', { fit: 'contain' }),
+        ],
+        theme: {
+          accent: '#2d274a',
+          accentSoft: '#e8e6f0',
+          accentMute: '#f0eef5',
+          contrast: '#2d274a',
+          surface: '#f5f5f0',
+        },
+      },
+    ],
     heroImage: media('/media/products/boot/20260304-lunio34100.jpg', 'Lunio 靴型按摩器閱讀情境照', 'Lunio massage boots reading lifestyle image', {
       aspectRatio: '16 / 10',
     }),
@@ -417,10 +475,10 @@ export const products: Product[] = [
       ergonomic: bootCutouts[2],
     },
     features: [
-      '靴型全包覆結構',
-      '足底到小腿完整覆蓋',
-      '多段節奏模式',
-      '晚間收尾與運動後恢復皆適合',
+      lt('靴型全包覆結構', 'Full-Wrap Boot Design'),
+      lt('足底到小腿完整覆蓋', 'Foot-to-Calf Coverage'),
+      lt('多段節奏模式', 'Multi-Rhythm Modes'),
+      lt('晚間收尾與運動後恢復皆適合', 'Ideal for Evening & Post-Workout'),
     ],
     specs: {
       按摩部位: '足底 / 腳踝 / 小腿',
@@ -593,10 +651,10 @@ export const products: Product[] = [
       }),
     },
     features: [
-      '頸肩輪廓貼合設計',
-      '雙拉帶調節力道',
-      '加熱與模式一體控制',
-      '適合閱讀、工作與晚間休息',
+      lt('頸肩輪廓貼合設計', 'Contoured Neck-Shoulder Fit'),
+      lt('雙拉帶調節力道', 'Dual Strap Pressure Control'),
+      lt('加熱與模式一體控制', 'Integrated Heat & Mode Control'),
+      lt('適合閱讀、工作與晚間休息', 'Perfect for Reading, Work & Rest'),
     ],
     specs: {
       按摩部位: '頸部 / 肩頸',

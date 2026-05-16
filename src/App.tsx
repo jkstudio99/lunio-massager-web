@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import ScrollToTop from '@/components/common/ScrollToTop';
+import { useTheme } from '@/store/theme';
 import FloatingContact from '@/components/common/FloatingContact';
 import BackToTop from '@/components/common/BackToTop';
 import CartDrawer from '@/components/cart/CartDrawer';
+import SearchOverlay from '@/components/common/SearchOverlay';
 import HomePage from '@/pages/HomePage';
 import ProductListPage from '@/pages/ProductListPage';
 import ProductDetailPage from '@/pages/ProductDetailPage';
@@ -13,14 +16,23 @@ import AccountPage from '@/pages/AccountPage';
 import AboutPage from '@/pages/AboutPage';
 import SupportPage from '@/pages/SupportPage';
 import BlogPage from '@/pages/BlogPage';
+import BlogDetailPage from '@/pages/BlogDetailPage';
+import WishlistPage from '@/pages/WishlistPage';
 
 export default function App() {
+  const initTheme = useTheme((s) => s.initTheme);
+
+  useEffect(() => {
+    initTheme();
+  }, [initTheme]);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <FloatingContact />
       <BackToTop />
       <CartDrawer />
+      <SearchOverlay />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
@@ -32,6 +44,8 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/blog/:slug" element={<BlogDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

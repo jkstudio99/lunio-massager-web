@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Search, Menu, X, User, Sun, Moon, Globe, ChevronDown } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, User, Globe, ChevronDown, Heart } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
+import { useSearchStore } from '@/store/search';
 import { useTheme } from '@/store/theme';
 import { useI18n } from '@/store/i18n';
+import ThemeToggle from '@/components/common/ThemeToggle';
 import { localeNames, type Locale } from '@/i18n/translations';
 import { cn } from '@/lib/utils';
 
@@ -17,18 +20,18 @@ const navLinks = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const cartCount = useCartStore((s) => s.items.reduce((sum, item) => sum + item.quantity, 0));
-  const { theme, toggleTheme } = useTheme();
+  const wishlistCount = useWishlistStore((s) => s.items.length);
+  const theme = useTheme((s) => s.theme);
   const { locale, setLocale, t } = useI18n();
 
   const isHome = location.pathname === '/';
   const isAbout = location.pathname === '/about';
   const isTransparentPage = isHome || isAbout;
-  const isTransparent = isTransparentPage && !scrolled && !mobileOpen && !searchOpen;
+  const isTransparent = isTransparentPage && !scrolled && !mobileOpen;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -135,19 +138,10 @@ export default function Header() {
             </div>
 
             {/* Theme toggle */}
-            <button
-              onClick={toggleTheme}
-              className={cn(
-                'p-2.5 transition-colors',
-                isTransparent ? 'text-white/60 hover:text-white' : 'text-muted hover:text-primary'
-              )}
-              aria-label={theme === 'light' ? t.theme.dark : t.theme.light}
-            >
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
+            <ThemeToggle transparent={isTransparent} />
 
             <button
-              onClick={() => setSearchOpen(!searchOpen)}
+              onClick={() => useSearchStore.getState().openSearch()}
               className={cn(
                 'p-2.5 transition-colors',
                 isTransparent ? 'text-white/60 hover:text-white' : 'text-muted hover:text-primary'
@@ -166,6 +160,22 @@ export default function Header() {
               aria-label={t.nav.account}
             >
               <User size={18} />
+            </Link>
+
+            <Link
+              to="/wishlist"
+              className={cn(
+                'relative hidden sm:flex p-2.5 transition-colors',
+                isTransparent ? 'text-white/60 hover:text-white' : 'text-muted hover:text-primary'
+              )}
+              aria-label={t.wishlist?.viewWishlist ?? 'Wishlist'}
+            >
+              <Heart size={18} />
+              {wishlistCount > 0 && (
+                <span className="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-crocus px-1 text-white text-[9px] font-bold">
+                  {wishlistCount > 99 ? '99+' : wishlistCount}
+                </span>
+              )}
             </Link>
 
             <button
@@ -187,23 +197,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-
-      {/* Search overlay */}
-      {searchOpen && (
-        <div className="border-t border-default bg-surface px-6 py-4 transition-colors">
-          <div className="mx-auto max-w-[640px]">
-            <div className="relative">
-              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
-              <input
-                type="text"
-                placeholder={t.nav.search}
-                className="w-full h-11 pl-12 pr-5 bg-surface-alt border border-default rounded-full focus:outline-none focus:ring-2 focus:ring-crocus/30 text-sm text-primary placeholder:text-muted transition-colors"
-                autoFocus
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Mobile nav */}
       {mobileOpen && (
