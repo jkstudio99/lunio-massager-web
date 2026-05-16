@@ -1,0 +1,171 @@
+flowchart TD
+    %% ════════════════════════════════════════
+    %% LUNIO MASSAGER — COMPLETE USER FLOW
+    %% ════════════════════════════════════════
+
+    %% ── Entry ──
+    ENTRY((🌐 User Visits))
+    ENTRY --> HOME
+
+    %% ── Global Header ──
+    subgraph HEADER["🧭 Global Header — All Pages"]
+        direction LR
+        NAV_HOME["Home"]
+        NAV_PRODUCTS["Products"]
+        NAV_ABOUT["About"]
+        NAV_BLOG["Blog"]
+        NAV_SUPPORT["Support"]
+        SEARCH_BTN["🔍 Search"]
+        THEME_BTN["🌙 Theme"]
+        ACCOUNT_BTN["👤 Account"]
+        WISHLIST_BTN["♡ Wishlist"]
+        CART_BTN["🛒 Cart"]
+    end
+
+    %% ── Pages ──
+    HOME["🏠 Home Page"]
+    PRODUCTS["📦 Product Listing"]
+    DETAIL["🔎 Product Detail"]
+    CART_PAGE["🛒 Cart Page"]
+    WISHLIST_PAGE["♡ Wishlist Page"]
+    BLOG["📝 Blog Listing"]
+    BLOG_DETAIL["📖 Blog Detail"]
+    ACCOUNT["👤 Account Page"]
+    ABOUT["ℹ️ About Us"]
+    SUPPORT["📞 Support"]
+
+    %% ── Overlays ──
+    SEARCH_OVERLAY["🔍 Search Overlay\nCmd+K / Ctrl+K"]
+    CART_DRAWER["🛒 Cart Drawer\nSlide-in Panel"]
+
+    %% ── Checkout ──
+    subgraph CHECKOUT["💳 Checkout Flow"]
+        direction LR
+        STEP1["Step 1\nShipping Info"]
+        STEP2["Step 2\nPayment Method"]
+        STEP3["Step 3\nOrder Review"]
+        STEP1 -->|Next| STEP2
+        STEP2 -->|Next| STEP3
+        STEP2 -.->|Back| STEP1
+        STEP3 -.->|Back| STEP2
+    end
+
+    SUCCESS["✅ Order Confirmed\nOrder #LUN-xxxxxxxx"]
+
+    %% ── Auth ──
+    subgraph AUTH["🔐 Authentication"]
+        direction TB
+        LOGIN_FORM["Login / Register Form"]
+        GOOGLE_AUTH["Google OAuth\nFirebase Popup"]
+        LINE_AUTH["LINE OAuth\nRedirect Flow"]
+        DASHBOARD["Account Dashboard\nProfile · Orders · Settings"]
+    end
+
+    %% ════════════════════════════════════════
+    %% CONNECTIONS
+    %% ════════════════════════════════════════
+
+    %% Header nav
+    NAV_HOME --> HOME
+    NAV_PRODUCTS --> PRODUCTS
+    NAV_ABOUT --> ABOUT
+    NAV_BLOG --> BLOG
+    NAV_SUPPORT --> SUPPORT
+    ACCOUNT_BTN --> ACCOUNT
+    WISHLIST_BTN --> WISHLIST_PAGE
+    CART_BTN --> CART_DRAWER
+    SEARCH_BTN --> SEARCH_OVERLAY
+    THEME_BTN -.->|Toggle Dark/Light| THEME_BTN
+
+    %% Home page
+    HOME -->|"Shop Now / Explore"| PRODUCTS
+    HOME -->|"Learn More"| ABOUT
+    HOME -->|"Best Seller Card"| DETAIL
+    HOME -->|"Category Card"| PRODUCTS
+
+    %% Product listing
+    PRODUCTS -->|"Click Product Card"| DETAIL
+    PRODUCTS -->|"Filter by Category"| PRODUCTS
+    PRODUCTS -->|"Sort / View Toggle"| PRODUCTS
+
+    %% Product detail
+    DETAIL -->|"🛒 Add to Cart"| CART_DRAWER
+    DETAIL -->|"♡ Toggle Wishlist"| WISHLIST_PAGE
+    DETAIL -->|"Related Product"| DETAIL
+    DETAIL -.->|"Breadcrumb"| PRODUCTS
+
+    %% Cart drawer
+    CART_DRAWER -->|"Checkout"| STEP1
+    CART_DRAWER -->|"Continue Shopping"| PRODUCTS
+    CART_DRAWER -->|"Change Qty / Remove"| CART_DRAWER
+
+    %% Cart page
+    CART_PAGE -->|"Proceed to Checkout"| STEP1
+    CART_PAGE -->|"Continue Shopping"| PRODUCTS
+    CART_PAGE -->|"Click Product"| DETAIL
+
+    %% Checkout
+    STEP3 -->|"✅ Place Order"| SUCCESS
+    SUCCESS -->|"Back to Home"| HOME
+    STEP1 -.->|"Back to Cart"| CART_PAGE
+
+    %% Search overlay
+    SEARCH_OVERLAY -->|"Product Result"| DETAIL
+    SEARCH_OVERLAY -->|"Blog Result"| BLOG_DETAIL
+    SEARCH_OVERLAY -.->|"ESC / Close"| SEARCH_OVERLAY
+
+    %% Blog
+    BLOG -->|"Click Article"| BLOG_DETAIL
+    BLOG -->|"Filter / Search"| BLOG
+    BLOG_DETAIL -->|"💬 Post Comment"| BLOG_DETAIL
+    BLOG_DETAIL -->|"Related Product CTA"| DETAIL
+    BLOG_DETAIL -->|"Prev / Next Article"| BLOG_DETAIL
+    BLOG_DETAIL -.->|"Back to Blog"| BLOG
+
+    %% Wishlist
+    WISHLIST_PAGE -->|"🛒 Add to Cart"| CART_DRAWER
+    WISHLIST_PAGE -->|"Click Product"| DETAIL
+    WISHLIST_PAGE -->|"Empty → Browse"| PRODUCTS
+
+    %% Account / Auth
+    ACCOUNT -->|"Not Logged In"| LOGIN_FORM
+    ACCOUNT -->|"Logged In"| DASHBOARD
+    LOGIN_FORM -->|"Google Sign-In"| GOOGLE_AUTH
+    LOGIN_FORM -->|"LINE Sign-In"| LINE_AUTH
+    GOOGLE_AUTH -->|"Success"| DASHBOARD
+    LINE_AUTH -->|"Redirect Back"| DASHBOARD
+    DASHBOARD -->|"Wishlist Menu"| WISHLIST_PAGE
+    DASHBOARD -->|"Sign Out"| LOGIN_FORM
+
+    %% About & Support
+    ABOUT -->|"Shop Now CTA"| PRODUCTS
+    SUPPORT -->|"FAQ Accordion"| SUPPORT
+
+    %% ════════════════════════════════════════
+    %% STYLES
+    %% ════════════════════════════════════════
+
+    style ENTRY fill:#7c5cbf,color:#fff,stroke:#7c5cbf
+    style HOME fill:#7c5cbf,color:#fff
+    style PRODUCTS fill:#5b8def,color:#fff
+    style DETAIL fill:#5b8def,color:#fff
+    style CART_PAGE fill:#e07a5f,color:#fff
+    style CART_DRAWER fill:#e07a5f,color:#fff
+    style CHECKOUT fill:#2d6a4f,color:#fff
+    style STEP1 fill:#3a8a5f,color:#fff
+    style STEP2 fill:#3a8a5f,color:#fff
+    style STEP3 fill:#3a8a5f,color:#fff
+    style SUCCESS fill:#2d6a4f,color:#fff
+    style SEARCH_OVERLAY fill:#7c5cbf,color:#fff
+    style WISHLIST_PAGE fill:#e07a5f,color:#fff
+    style BLOG fill:#6b7280,color:#fff
+    style BLOG_DETAIL fill:#6b7280,color:#fff
+    style ACCOUNT fill:#4285f4,color:#fff
+    style AUTH fill:#4285f4,color:#fff
+    style LOGIN_FORM fill:#4285f4,color:#fff
+    style GOOGLE_AUTH fill:#ea4335,color:#fff
+    style LINE_AUTH fill:#06c755,color:#fff
+    style DASHBOARD fill:#4285f4,color:#fff
+    style ABOUT fill:#6b7280,color:#fff
+    style SUPPORT fill:#6b7280,color:#fff
+    style HEADER fill:#f3f4f6,color:#1f2937,stroke:#d1d5db
