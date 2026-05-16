@@ -132,9 +132,11 @@ export interface Review {
   id: string;
   productId: string;
   author: string;
+  avatar?: string;
+  role?: string;
   rating: number;
-  comment: string;
+  comment: { 'zh-TW': string; en: string };
+  product?: { 'zh-TW': string; en: string };
   date: string;
   verified: boolean;
-  role?: string;
 }
