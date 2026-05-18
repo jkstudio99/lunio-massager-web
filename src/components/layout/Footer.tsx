@@ -1,38 +1,48 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Youtube, Mail } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
 import { useI18n } from '@/store/i18n';
+import { useCookieStore } from '@/store/cookie';
 
 export default function Footer() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const isZh = locale === 'zh-TW';
 
   const footerSections = [
     {
       title: t.footer.productsTitle,
       links: [
         { name: t.footer.allProducts, path: '/products' },
-        { name: t.footer.calfMassager, path: '/products?category=calf-massager' },
-        { name: t.footer.bootMassager, path: '/products?category=boot-massager' },
-        { name: t.footer.neckShoulder, path: '/products?category=neck-shoulder' },
+        { name: t.footer.bootMassager, path: '/product/boot-massager' },
+        { name: t.footer.calfMassager, path: '/product/calf-massager' },
+        { name: t.footer.neckShoulder, path: '/product/neck-shoulder' },
       ],
     },
     {
       title: t.footer.serviceTitle,
       links: [
+        { name: t.footer.faq, path: '/support' },
         { name: t.footer.shippingInfo, path: '/support' },
         { name: t.footer.returnPolicy, path: '/support' },
         { name: t.footer.warrantyService, path: '/support' },
-        { name: t.footer.faq, path: '/support' },
       ],
     },
     {
       title: t.footer.companyTitle,
       links: [
         { name: t.footer.aboutLunio, path: '/about' },
-        { name: t.footer.brandStory, path: '/about' },
         { name: t.footer.blogSection, path: '/blog' },
-        { name: t.footer.contactUs, path: '/support' },
+        { name: isZh ? '顧客評價' : 'Reviews', path: '/reviews' },
+        { name: isZh ? '門市據點' : 'Store Locations', path: '/store' },
       ],
     },
+  ];
+
+  const socialLinks = [
+    { icon: FaFacebook, label: 'Facebook', href: '#' },
+    { icon: FaInstagram, label: 'Instagram', href: '#' },
+    { icon: FaYoutube, label: 'YouTube', href: '#' },
+    { icon: MdEmail, label: 'Email', href: 'mailto:hello@lunio.com.tw' },
   ];
 
   return (
@@ -72,14 +82,14 @@ export default function Footer() {
               {t.footer.tagline}
             </p>
             <div className="flex gap-2">
-              {[Facebook, Instagram, Youtube, Mail].map((Icon, i) => (
+              {socialLinks.map(({ icon: Icon, label, href }) => (
                 <a
-                  key={i}
-                  href="#"
+                  key={label}
+                  href={href}
                   className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 hover:bg-crocus text-white/70 hover:text-white transition-all"
-                  aria-label="Social link"
+                  aria-label={label}
                 >
-                  <Icon size={16} />
+                  <Icon size={17} />
                 </a>
               ))}
             </div>
@@ -112,9 +122,14 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/35">
             <p>{t.footer.copyright}</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white/55 transition-colors">{t.footer.privacyPolicy}</a>
-              <a href="#" className="hover:text-white/55 transition-colors">{t.footer.termsOfService}</a>
-              <a href="#" className="hover:text-white/55 transition-colors">{t.footer.cookieSettings}</a>
+              <Link to="/privacy" className="hover:text-white/55 transition-colors">{t.footer.privacyPolicy}</Link>
+              <Link to="/terms" className="hover:text-white/55 transition-colors">{t.footer.termsOfService}</Link>
+              <button
+                onClick={() => useCookieStore.getState().openSettings()}
+                className="hover:text-white/55 transition-colors"
+              >
+                {t.footer.cookieSettings}
+              </button>
             </div>
           </div>
         </div>

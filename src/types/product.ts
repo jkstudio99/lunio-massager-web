@@ -137,6 +137,7 @@ export interface Review {
   rating: number;
   comment: { 'zh-TW': string; en: string };
   product?: { 'zh-TW': string; en: string };
+  image?: string;
   date: string;
   verified: boolean;
 }

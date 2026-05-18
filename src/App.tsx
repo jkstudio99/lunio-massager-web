@@ -19,6 +19,14 @@ import SupportPage from '@/pages/SupportPage';
 import BlogPage from '@/pages/BlogPage';
 import BlogDetailPage from '@/pages/BlogDetailPage';
 import WishlistPage from '@/pages/WishlistPage';
+import ReviewsPage from '@/pages/ReviewsPage';
+import StorePage from '@/pages/StorePage';
+import OrderTrackingPage from '@/pages/OrderTrackingPage';
+import AddressBookPage from '@/pages/AddressBookPage';
+import AccountSettingsPage from '@/pages/AccountSettingsPage';
+import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
+import TermsPage from '@/pages/TermsPage';
+import CookieBanner from '@/components/common/CookieBanner';
 
 export default function App() {
   const initTheme = useTheme((s) => s.initTheme);
@@ -35,6 +43,7 @@ export default function App() {
       <CartDrawer />
       <SearchOverlay />
       <ToastContainer />
+      <CookieBanner />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
@@ -43,11 +52,18 @@ export default function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/account/orders" element={<OrderTrackingPage />} />
+          <Route path="/account/addresses" element={<AddressBookPage />} />
+          <Route path="/account/settings" element={<AccountSettingsPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/reviews" element={<ReviewsPage />} />
+          <Route path="/store" element={<StorePage />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/wishlist" element={<WishlistPage />} />
           <Route path="/blog/:slug" element={<BlogDetailPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

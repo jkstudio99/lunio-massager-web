@@ -1,15 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   User, Package, MapPin, Heart, LogIn, LogOut, Mail, Lock, Eye, EyeOff,
-  ShoppingBag, Settings, ChevronRight,
+  ShoppingBag, Settings, ChevronRight, Camera,
 } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaLine } from 'react-icons/fa6';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/store/i18n';
 import { useAuthStore } from '@/store/auth';
+import { useProfileStore } from '@/store/profile';
+import { useWishlistStore } from '@/store/wishlist';
+import { useAddressStore } from '@/store/address';
+import { useOrderStore } from '@/store/orders';
+import { useToastStore } from '@/store/toast';
 
 type Tab = 'login' | 'register';
 
@@ -17,14 +22,42 @@ type Tab = 'login' | 'register';
 function AccountDashboard() {
   const { t, locale } = useI18n();
   const { user, logout } = useAuthStore();
+  const profile = useProfileStore();
+  const wishlistCount = useWishlistStore((s) => s.items.length);
+  const addressCount = useAddressStore((s) => s.addresses.length);
+  const orderCount = useOrderStore((s) => s.orders.length);
+  const addToast = useToastStore((s) => s.addToast);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!user) return null;
 
+  const avatarUrl = profile.avatarUrl || user.photoURL || null;
+  const displayName = profile.displayName || user.displayName || user.email;
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      addToast(locale === 'zh-TW' ? '請選擇圖片檔案' : 'Please select an image', 'error');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      addToast(locale === 'zh-TW' ? '檔案不可超過 5MB' : 'Max file size 5MB', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      profile.setAvatar(ev.target?.result as string);
+      addToast(locale === 'zh-TW' ? '大頭照已更新' : 'Photo updated', 'success');
+    };
+    reader.readAsDataURL(file);
+  };
+
   const menuItems = [
-    { icon: Package, label: t.account.orderTracking, to: '#' },
+    { icon: Package, label: t.account.orderTracking, to: '/account/orders' },
     { icon: Heart, label: t.account.wishlist, to: '/wishlist' },
-    { icon: MapPin, label: t.account.addressBook, to: '#' },
-    { icon: Settings, label: locale === 'zh-TW' ? '帳戶設定' : 'Account Settings', to: '#' },
+    { icon: MapPin, label: t.account.addressBook, to: '/account/addresses' },
+    { icon: Settings, label: locale === 'zh-TW' ? '帳戶設定' : 'Account Settings', to: '/account/settings' },
   ];
 
   return (
@@ -37,31 +70,44 @@ function AccountDashboard() {
         >
           {/* Profile header */}
           <div className="text-center mb-10">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden bg-crocus/10 flex items-center justify-center">
-              {user.photoURL ? (
-                <img src={user.photoURL} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-              ) : (
-                <User size={32} className="text-crocus" />
-              )}
+            <div className="relative w-24 h-24 mx-auto mb-4">
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-crocus/10 flex items-center justify-center">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                ) : (
+                  <User size={36} className="text-crocus" />
+                )}
+              </div>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute -bottom-1 -right-1 w-8 h-8 bg-crocus hover:bg-crocus-hover text-white rounded-full flex items-center justify-center shadow-lg transition-colors"
+              >
+                <Camera size={14} />
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarUpload}
+                className="hidden"
+              />
             </div>
-            <h1 className="text-xl font-bold text-primary">
-              {user.displayName || user.email}
-            </h1>
+            <h1 className="text-xl font-bold text-primary">{displayName}</h1>
             <p className="text-sm text-muted mt-1">{user.email}</p>
           </div>
 
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
-              { icon: ShoppingBag, label: locale === 'zh-TW' ? '訂單' : 'Orders', value: '0' },
-              { icon: Heart, label: locale === 'zh-TW' ? '收藏' : 'Saved', value: '0' },
-              { icon: MapPin, label: locale === 'zh-TW' ? '地址' : 'Addresses', value: '0' },
-            ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="rounded-2xl bg-surface-alt p-4 text-center">
+              { icon: ShoppingBag, label: locale === 'zh-TW' ? '訂單' : 'Orders', value: String(orderCount), to: '/account/orders' },
+              { icon: Heart, label: locale === 'zh-TW' ? '收藏' : 'Saved', value: String(wishlistCount), to: '/wishlist' },
+              { icon: MapPin, label: locale === 'zh-TW' ? '地址' : 'Addresses', value: String(addressCount), to: '/account/addresses' },
+            ].map(({ icon: Icon, label, value, to }) => (
+              <Link key={label} to={to} className="rounded-2xl bg-surface-alt p-4 text-center hover:bg-crocus/5 transition-colors">
                 <Icon size={18} className="mx-auto mb-2 text-crocus" />
                 <p className="text-lg font-bold text-primary">{value}</p>
                 <p className="text-[11px] text-muted">{label}</p>
-              </div>
+              </Link>
             ))}
           </div>
 
